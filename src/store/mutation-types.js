@@ -1,0 +1,1 @@
+export const RECEIVE_SHOP_INFO = 'receive_shop_info' //接收门店信息

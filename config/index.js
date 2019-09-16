@@ -11,14 +11,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api' : {
-        target : "http://101.231.106.162:9104",
+      '/web' : {
+        target: "http://192.168.1.65:8090",
         // target: "http://192.168.1.42:8080",
         // target: process.env.NODE_ENV === 'development'?'http://开发环境':'http://非开发环境',
         changeOrigin : true, //是否改变反向代理的地址
         // ws: false, //值为false防止控制台报错★★★★★★★★
         pathRewrite:{
-          '^/api':'//mtWorkOrder' //此处将^/api替换为/api，即使用/api就变成了http:AA.BB.CC.DD:端口//mtWorkOrder
+          '^/web':'/jewelry/web' //此处将^/api替换为/api，即使用/api就变成了http:AA.BB.CC.DD:端口//mtWorkOrder
         }
       }
     },

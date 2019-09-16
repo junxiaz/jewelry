@@ -1,0 +1,16 @@
+<template>
+  <div class="baseInfo">
+    <!-- 基础信息 -->
+    基础信息
+  </div>
+</template>
+
+<script>
+export default {
+  name:"baseInfo"
+}
+</script>
+
+<style scoped lang="scss">
+
+</style>

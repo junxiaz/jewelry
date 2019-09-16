@@ -1,0 +1,151 @@
+<template>
+  <div class="statistics">
+    <!-- 实时统计 -->
+    
+    <h2>长沙黄金城中国黄金</h2>
+
+    <!-- 数量统计 -->
+    <el-row class="count" type="flex" justify="space-between">
+      <el-col :span="4" class="one" align="left">
+        <h5>珠宝总数</h5>
+        <p><span>1100</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+        <p>
+          <span>110000,00</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+      </el-col>
+
+      <el-col :span="4" class="two">
+        <h5>预警线</h5>
+        <p><span>80000</span> 元
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+        <p><span>+30000</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+      </el-col>
+
+      <el-col :span="4" class="three">
+        <h5>在库珠宝</h5>
+        <p><span>100</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+        <p><span>10000,00</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+      </el-col>
+
+      <el-col :span="4" class="four">
+        <h5>在柜珠宝</h5>
+        <p><span>1000</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+        <p><span>10000,00</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+      </el-col>
+
+      <el-col :span="4" class="five">
+        <h5>当天销售</h5>
+        <p><span>100</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+        <p><span>10000,00</span> 件
+          <img src="../../../static/images/edit_icon.png" @click="updata()" alt="修改"></img>
+        </p>
+      </el-col>
+    </el-row>
+
+    <div class="tableMain">
+      <!-- 表格 -->
+      <el-table :data="tableData" border style="width: 100%"
+        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px'}"
+      >
+        <el-table-column prop="date" label="位置"></el-table-column>
+        <el-table-column prop="name" label="珠宝数量"> </el-table-column>
+        <el-table-column prop="address" label="成本"></el-table-column>
+        <el-table-column prop="name" label="设备状态"></el-table-column>
+      </el-table>
+
+      <!-- 分页 -->
+      <el-row style="margin-top:15px;">
+        <el-col :span="12" :offset="12" align="right">
+          <el-pagination background layout="total,prev, pager, next"
+            :total="20">
+          </el-pagination>
+        </el-col>
+      </el-row>
+    </div>
+    
+
+  </div>
+</template>
+
+<script>
+export default {
+  name:"statistics",
+  data(){
+    return{      
+      tableData: [
+        {date: '2016-05-03',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-04',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-05',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-02',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-06',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-08',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-09',name: '王小虎',address: '上海市普陀区金沙江路'},
+      ]
+    }
+  },
+  methods:{
+    updata(){
+
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.statistics{
+  background:#fff;
+  h2{    
+    padding:36px 40px 0;    
+    font:700 22px/1 "NotoSansHans-Bold";
+    color:#464646;
+  }
+
+  .count{
+    display: flex;
+    border-bottom:1px solid #DEDEDE;
+    margin-top:45px;
+    margin-bottom:40px;
+    padding:0 0 36px 40px;
+    >.el-col{
+      border-right:1px solid #DEDEDE;
+      font:16px/1 "NotoSansHans-Medium";
+      h5{color:#646464;}
+      span{font-size:32px;word-wrap : break-word;}
+      p{
+        cursor: pointer;
+        img{
+          display: none;
+          vertical-align: bottom;
+        }
+      }
+      p:hover img{display: inline-block;}
+      p:nth-child(2){margin:27px 0 17px 0;}
+    }
+    .one{color:#373A5B}
+    .two{color:#00AAEA;}
+    .three{color:#7C51C8;}
+    .four{color:#E2A700;}
+    .five{color:#FE7355;border:0;}
+  }
+
+  .tableMain{
+    margin:40px 160px 0 100px;
+  }
+}
+</style>

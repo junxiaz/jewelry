@@ -1,0 +1,132 @@
+<template>
+  <div class="container">
+    <!-- 首页 -->
+    
+    <!-- 搜索条件 -->
+    <div class="search">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="城市">
+          <el-select v-model="formInline.region" placeholder="活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <!-- 表格 -->
+    <div class="table">
+      <el-table :data="tableData" border fit
+        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px'}"
+        :row-style="{fontSize: '16px'}" style="width: 100%">
+        <el-table-column fixed prop="name" label="店名"></el-table-column>
+        <el-table-column prop="name" label="库存"></el-table-column>
+        <el-table-column prop="province" label="预警"></el-table-column>
+        <el-table-column prop="city" label="联系人"></el-table-column>
+        <el-table-column prop="address" label="联系电话"></el-table-column>
+        <el-table-column fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-link type="primary" @click="handleClick(scope.row)">查看详情</el-link>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <!-- 分页 -->
+    <el-row style="margin-top:15px;">
+      <el-col :span="12" :offset="12" align="right">
+        <el-pagination background layout="total,prev, pager, next"
+          :total="20">
+        </el-pagination>
+      </el-col>
+    </el-row>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        tableData: [{
+          date: '2016-05-03',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-08',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-06',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-07',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市金沙江路 1518 弄',
+          zip: 200333
+        }],
+        formInline: {
+          user: '',
+          region: ''
+        }
+      }
+    },
+    methods: {
+      onSubmit() {
+        console.log('submit!');
+      },
+      
+      handleClick(row) {
+        console.log(row);
+      }
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  // @import '../../common/style/element-variables.scss';
+  .container {
+    margin-top: 20px;
+    padding: 30px 40px 20px;
+    background: #fff;
+    .pagination {
+      padding-top: 15px;
+    }
+  }
+</style>

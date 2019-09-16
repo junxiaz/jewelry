@@ -59,28 +59,33 @@
 </template>
 
 <script>
+  import { mapState } from "vuex";
   export default {
     data() {
       return {
         params:{pageNo:1,pageSize:10,processName:""},
         total:20,
-        tableData: [
-          {shopName:"黄金城中中国黄金",stock:"21",province:"300",contact:"小张",phone:"13412341234",status:"0"},
-          {shopName:"周大福",stock:"32",province:"10",contact:"小李",phone:"13412341234",status:"-1"},
-          {shopName:"周生生",stock:"45",province:"4000",contact:"小红",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"小明",phone:"13412341234",status:"-1"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"李红",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"王强",phone:"13412341234",status:"-1"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"丽丽",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"李潇",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"曾聪",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"小露",phone:"13412341234",status:"0"},
-        ],
+        // tableData: [
+        //   {shopName:"黄金城中中国黄金",stock:"21",province:"300",contact:"小张",phone:"13412341234",status:"0"},
+        //   {shopName:"周大福",stock:"32",province:"10",contact:"小李",phone:"13412341234",status:"-1"},
+        //   {shopName:"周生生",stock:"45",province:"4000",contact:"小红",phone:"13412341234",status:"0"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"小明",phone:"13412341234",status:"-1"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"李红",phone:"13412341234",status:"0"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"王强",phone:"13412341234",status:"-1"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"丽丽",phone:"13412341234",status:"0"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"李潇",phone:"13412341234",status:"0"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"曾聪",phone:"13412341234",status:"0"},
+        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"小露",phone:"13412341234",status:"0"},
+        // ],
+        tabelData: $store.shopInfo,
         formInline: {
           user: '',
           region: ''
         }
       }
+    },
+    computed: {
+      ...mapState(['shopInfo'])
     },
     methods: {
        //页码
@@ -126,7 +131,8 @@
       }
     },
     mounted(){
-      this.initEasyTable();
+      // this.initEasyTable();
+      this.$store.dispatch('getShopInfo')
     }
   }
 </script>

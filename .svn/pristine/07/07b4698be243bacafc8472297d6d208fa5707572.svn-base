@@ -1,0 +1,29 @@
+<template>
+  <div class="baseInfo">
+    <!-- 基础信息 -->
+    基础信息
+  </div>
+</template>
+
+<script>
+export default {
+  name:"baseInfo"
+}
+</script>
+
+<style scoped lang="scss">
+.baseInfo{
+  background:#fff;
+  padding:36px 40px;
+  h2{
+    font:700 22px/1 "NotoSansHans-Bold";
+    color:#464646;
+  }
+
+  .main{
+    .formStyle{
+      margin:24px 0 30px;
+    }
+  }
+}
+</style>

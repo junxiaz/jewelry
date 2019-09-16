@@ -1,0 +1,127 @@
+<template>
+  <div class="baseInfo">
+    <!-- 基本信息 -->
+    <!-- 门店信息 -->
+    <classNotes title="门店信息"/>
+    <el-form ref="form" :model="form" label-width="100px" :inline="true">
+      <el-form-item label="门店名称">
+        <el-input v-model="form.name" size="mini"></el-input>
+      </el-form-item>
+      <el-form-item label="负责人">
+        <el-input v-model="form.name" size="mini"></el-input>
+      </el-form-item>
+      <el-form-item label="联系地址">
+        <el-input v-model="form.name" size="mini"></el-input>
+      </el-form-item>
+      <el-form-item label="联系电话">
+        <el-input v-model="form.name" size="mini"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="form.name" size="mini"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <!-- 班次信息 -->
+    <classNotes title="班次信息">
+      <span class="word">(国家节假日加班时间)</span>
+    </classNotes>
+
+    <div class="shifts pl34px">
+      <div class="week"><span>平日/周末加班时间</span></div>
+      <el-form ref="form" :model="form" :inline="true">
+        <el-form-item label="早班">
+          <el-input v-model="form.name" size="mini"></el-input>
+        </el-form-item>
+        <el-form-item label="中班">
+          <el-input v-model="form.name" size="mini"></el-input>
+        </el-form-item>
+        <el-form-item label="晚班">
+          <el-input v-model="form.name" size="mini"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div class="special">
+        <span>特殊加班时间</span>
+        <el-button size="mini">+ 添加加班时间</el-button>
+      </div>
+      
+      <el-table :data="tableData" border style="width: 100%"
+        :header-cell-style="{background: '#F5F9FF',color: '#5F9EE0 ',fontSize: '16px',height:'35px'}"
+      >
+        <el-table-column prop="date" label="时间"></el-table-column>
+        <el-table-column prop="name" label="早班"> </el-table-column>
+        <el-table-column prop="address" label="中班"></el-table-column>
+        <el-table-column prop="name" label="晚班"></el-table-column>
+        <el-table-column prop="name" label="备注"></el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" icon="el-icon-edit-outline" size="small"></el-button>
+            <el-button type="text" icon="el-icon-delete" size="small"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 分页 -->
+      <el-row style="margin-top:15px;">
+        <el-col :span="12" :offset="12" align="right">
+          <el-pagination background layout="total,prev, pager, next"
+            :total="20">
+          </el-pagination>
+        </el-col>
+      </el-row>
+    </div>
+
+    <classNotes title="风控模型"/>
+    <div class="risk pl34px">
+      <el-form ref="form" :model="form">
+        <el-form-item label="风控模型">
+          <el-select v-model="form.region" placeholder="请选择风控模型" size="mini">
+            <el-option label="风控模型一" value="shanghai"></el-option>
+            <el-option label="风控模型二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</template>
+
+<script>
+import classNotes from "@/common/classNotes"
+export default {
+  name:"baseInfo",
+  components:{
+    classNotes
+  },
+  data(){
+    return {
+      form:{
+        name:"",
+        region:""
+      },
+      tableData: [
+        {date: '2016-05-03',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-04',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-05',name: '王小虎',address: '上海市普陀区金沙江路'},
+        {date: '2016-05-09',name: '王小虎',address: '上海市普陀区金沙江路'},
+      ]
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.pl34px{padding-left:34px;}
+.baseInfo{
+  background:#fff;
+  padding:36px 40px;
+
+  .classNotes{
+    .word{color:#FB6969;font:12px/1 "NotoSansHans-Regular";}
+  }
+
+  .shifts{
+    >div span{font:16px/54px "NotoSansHans-Medium";color:#5F9EE0;}
+
+  }
+}
+</style>
