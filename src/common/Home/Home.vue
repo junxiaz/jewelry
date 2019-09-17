@@ -4,15 +4,15 @@
     
     <!-- 搜索条件 myStyle,homePage样式见style.css-->
     <div class="search">
-      <el-form :inline="true" :model="formInline" ref="cityForm" class="demo-form-inline myStyle homePage">
+      <el-form :inline="true" :model="params" ref="cityForm" class="demo-form-inline myStyle homePage">
         <el-form-item label="城市">
-          <el-select v-model="formInline.city" placeholder="城市" size="large" style="width:140px;">
+          <el-select v-model="params.city" placeholder="城市" size="large" style="width:140px;">
             <el-option label="上海" value="shanghai"></el-option>
             <el-option label="北京" value="beijing"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit(formInline)">查询</el-button>
+          <el-button type="primary" @click="onSubmit(params)">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -60,32 +60,31 @@
 
 <script>
   import { mapState } from "vuex";
+  import { reqShopInfo } from "../../api";
   export default {
     data() {
       return {
-        params:{pageNo:1,pageSize:10,processName:""},
+        params:{
+          pageNo: 1,
+          pageSize: 10,
+          token: this.$store.state.token,
+          userCode: this.$store.state.userCode,
+          city: ''
+        },
         total:20,
-        // tableData: [
-        //   {shopName:"黄金城中中国黄金",stock:"21",province:"300",contact:"小张",phone:"13412341234",status:"0"},
-        //   {shopName:"周大福",stock:"32",province:"10",contact:"小李",phone:"13412341234",status:"-1"},
-        //   {shopName:"周生生",stock:"45",province:"4000",contact:"小红",phone:"13412341234",status:"0"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"小明",phone:"13412341234",status:"-1"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"李红",phone:"13412341234",status:"0"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"王强",phone:"13412341234",status:"-1"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"丽丽",phone:"13412341234",status:"0"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"李潇",phone:"13412341234",status:"0"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"曾聪",phone:"13412341234",status:"0"},
-        //   {shopName:"老凤祥",stock:"666",province:"100",contact:"小露",phone:"13412341234",status:"0"},
-        // ],
-        tabelData: $store.shopInfo,
-        formInline: {
-          user: '',
-          region: ''
-        }
+        tableData: [
+          {shopName:"黄金城中中国黄金",stock:"21",province:"300",contact:"小张",phone:"13412341234",status:"0"},
+          {shopName:"周大福",stock:"32",province:"10",contact:"小李",phone:"13412341234",status:"-1"},
+          {shopName:"周生生",stock:"45",province:"4000",contact:"小红",phone:"13412341234",status:"0"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"小明",phone:"13412341234",status:"-1"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"李红",phone:"13412341234",status:"0"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"王强",phone:"13412341234",status:"-1"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"丽丽",phone:"13412341234",status:"0"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"李潇",phone:"13412341234",status:"0"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"曾聪",phone:"13412341234",status:"0"},
+          {shopName:"老凤祥",stock:"666",province:"100",contact:"小露",phone:"13412341234",status:"0"},
+        ]
       }
-    },
-    computed: {
-      ...mapState(['shopInfo'])
     },
     methods: {
        //页码
@@ -95,6 +94,7 @@
       },
       //查询
       onSubmit(formData) {
+        this.initEasyTable();
         console.log(formData)
       },
       
@@ -109,36 +109,21 @@
       },
 
       //初始化数据
-      initEasyTable(){
-        this.axios.post('/api/process/listProcess',this.params)
-        .then(res => {
-          if( res.status == 200){
-            console.log(res);
-            // this.loading = false;
-            // this.tableData = res.data.list;
-            // this.tableData.map((item,index)=>{
-            //   var pageData = res.data.page;
-            //   this.tableData[index].number = (pageData.pageNo-1)*pageData.pageSize + index +1;          
-            // });
-            // this.total = res.data.page.totalRecord;
-          }
-        })  
-        .catch(err =>{
-          this.loading = true;
-          this.$message.error('服务器响应失败');
-          console.log(err);
-        })
+      async initEasyTable(){
+        const {params} = this
+        const result = await reqShopInfo(params)
+        if(result.code === null) {
+          this.tableData = result.datas
+        }
       }
     },
     mounted(){
-      // this.initEasyTable();
-      this.$store.dispatch('getShopInfo')
+      this.initEasyTable();
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  // @import '../../common/style/element-variables.scss';
   .container {
     margin-top: 20px;
     padding: 30px 40px 20px;
