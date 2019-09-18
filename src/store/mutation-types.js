@@ -1,1 +1,1 @@
-export const RECEIVE_SHOP_INFO = 'receive_shop_info' //接收门店信息
+export const RECEIVE_USER_INFO = 'receive_user_info' // 接收用户信息
