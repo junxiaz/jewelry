@@ -7,16 +7,16 @@
       <classNotes title="查询详情"/>   
 
       <!-- 表单 -->
-      <el-form ref="form" :model="form" class="mt18px myStyle" :inline="true" size="medium">
+      <el-form ref="form" :inline="true" :model="params" class="mt18px myStyle" size="medium">
         <el-form-item label="位置">
-          <el-select v-model="form.position" placeholder="请选择位置" style="width:180px;">
+          <el-select v-model="params.position" placeholder="请选择位置" style="width:180px;">
             <el-option label="全部" value="0"></el-option>
             <el-option label="仓库" value="1"></el-option>
             <el-option label="黄金柜" value="2"></el-option>
-          </el-select>
+          </el-select> 
         </el-form-item>
         <el-form-item label="产品种类">
-          <el-select v-model="form.productType" placeholder="请选择产品类型" style="width:180px;">
+          <el-select v-model="params.productType" placeholder="请选择产品类型" style="width:180px;">
             <el-option label="全部" value="0"></el-option>
             <el-option label="手链" value="1"></el-option>
             <el-option label="戒指" value="2"></el-option>
@@ -24,23 +24,23 @@
           </el-select>
         </el-form-item>
         <el-form-item label="工艺">
-          <el-select v-model="form.art" placeholder="请选择工艺" style="width:180px;">
+          <el-select v-model="params.art" placeholder="请选择工艺" style="width:180px;">
             <el-option label="全部" value="0"></el-option>
             <el-option label="3D" value="1"></el-option>
             <el-option label="999足金" value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="入库日期">
-          <el-date-picker type="date" placeholder="开始日期" v-model="form.storageStartTime" style="width: 230px;"></el-date-picker>
-          <span style="color:#474747">~</span>
-          <el-time-picker placeholder="结束日期" v-model="form.storageEndTime" style="width: 230px;"></el-time-picker>
-        </el-form-item>
         <el-form-item label="条码">
-          <el-input v-model="form.barCode" placeholder="请输入条码" style="width:180px;"></el-input>
+          <el-input v-model="params.barCode" placeholder="请输入条码" style="width:180px;"></el-input>
+        </el-form-item>
+        <el-form-item label="入库日期">
+          <el-date-picker type="date" placeholder="开始日期" v-model="params.storageStartTime" style="width: 230px;"></el-date-picker>
+          <span style="color:#474747">~</span>
+          <el-time-picker placeholder="结束日期" v-model="params.storageEndTime" style="width: 230px;"></el-time-picker>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="onSubmit(form)" size="medium">确认</el-button>
+          <el-button type="primary" @click="onSubmit(params)" size="medium">查询</el-button>
         </el-form-item>
       </el-form>
 
@@ -48,14 +48,19 @@
       <el-table :data="tableData" border style="width: 100%;margin-top:10px;" class="mt30px myStyle"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
-        <el-table-column prop="barCode" label="条码"></el-table-column>
-        <el-table-column prop="position" label="位置"> </el-table-column>
-        <el-table-column prop="productType" label="产品种类"></el-table-column>
-        <el-table-column prop="art" label="工艺"></el-table-column>
-        <el-table-column prop="weight" label="重量"> </el-table-column>
-        <el-table-column prop="money" label="成本"></el-table-column>
-        <el-table-column prop="certificate" label="证书"></el-table-column>
-        <el-table-column prop="storageStartTime" label="入库日期"></el-table-column>
+        <el-table-column prop="barcode" label="barCode"></el-table-column>
+        <el-table-column prop="certificate" label="certificate"> </el-table-column>
+        <el-table-column prop="cost" label="cost"></el-table-column>
+        <el-table-column prop="counterCode" label="counterCode"></el-table-column>
+        <el-table-column prop="goldenWeight" label="goldenWeight"></el-table-column>
+        <el-table-column prop="libraryAge" label="libraryAge"></el-table-column>
+        <el-table-column prop="productCode" label="productCode"></el-table-column>
+        <el-table-column prop="shopCode" label="shopCode"></el-table-column>
+        <el-table-column prop="status" label="status"></el-table-column>
+        <el-table-column prop="tagEpc" label="tagEpc"></el-table-column>
+        <el-table-column prop="tagTid" label="tagTid"></el-table-column>
+        <el-table-column prop="warehouseCode" label="warehouseCode"></el-table-column>
+        <el-table-column prop="weight" label="weight"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -64,7 +69,7 @@
           <el-pagination background class="myStyle"
             layout="total,prev, pager, next" 
             @current-change="handleCurrentChange"
-            :page-size="params.pageSize" :total="total">
+            :page-size="params.pageSize"  :total="total">
           </el-pagination>
         </el-col>
       </el-row>
@@ -74,6 +79,8 @@
 
 <script>
 import classNotes from '@/common/classNotes'
+import { mapState } from "vuex";
+import { reqLabelInfo } from "@/api";
 export default {
   name:"labelQuery",
   components:{
@@ -81,9 +88,12 @@ export default {
   },
   data(){
     return {
-      params:{pageNo:1,pageSize:10},
-      total:7, 
-      form: {
+      params:{
+        pageNo: 1,
+        pageSize: 10,
+        token: this.$store.state.token,
+        userCode: this.$store.state.userCode,
+        city: '',
         position: '0',
         productType: '0',
         art: '',
@@ -91,49 +101,32 @@ export default {
         storageEndTime: false,
         barCode: '',
       },
-      tableData: [
-        {position:"仓库",productType:"戒指",art:"3D",storageStartTime:"2019/09/01",storageEndTime:"2019/09/01",barCode:"1A0001",weight:"1g",money:"300",certificate:"国家XX奖"},
-        {position:"仓库",productType:"戒指",art:"999足金",storageStartTime:"2019/09/02",storageEndTime:"2019/09/01",barCode:"1A0002",weight:"500g",money:"1000",certificate:"国家XX奖"},
-        {position:"黄金柜",productType:"手链",art:"999足金",storageStartTime:"2019/09/03",storageEndTime:"2019/09/01",barCode:"1A0003",weight:"23g",money:"300",certificate:"国家XX奖"},
-        {position:"黄金柜",productType:"戒指",art:"999足金",storageStartTime:"2019/09/01",storageEndTime:"2019/09/01",barCode:"1A0004",weight:"66g",money:"680",certificate:"国家XX奖"},
-        {position:"仓库",productType:"手链",art:"999足金",storageStartTime:"2019/09/05",storageEndTime:"2019/09/01",barCode:"1A0001",weight:"99g",money:"1800",certificate:"国家XX奖"},
-        {position:"仓库",productType:"戒指",art:"3D",storageStartTime:"2019/09/01",storageEndTime:"2019/09/01",barCode:"1A0001",weight:"1g",money:"300",certificate:""},
-        ]
+      total: 0,
+      tableData: []
     }
   },
-  methods:{
-    //更改页码
-      handleCurrentChange(val) {
-        this.params.pageNo = val;
-        this.initData();
-      },
-
-      onSubmit(formData){
-        console.log(formData)
-        this.initData()
-      },
-
-     // 初始化数据
-      initData(){
-      // this.axios.post('/api/process/listProcess',this.params)
-      // .then(res => {
-      //   if( res.data.code == "0000"){
-      //     this.loading = false;
-      //     this.tableData = res.data.list;
-      //     this.tableData.map((item,index)=>{
-      //       var pageData = res.data.page;
-      //       this.tableData[index].number = (pageData.pageNo-1)*pageData.pageSize + index +1;          
-      //     });
-      //     this.total = res.data.page.totalRecord;
-      //   }
-      // })  
-      // .catch(err =>{
-      //   this.loading = true;
-      //   this.$message.error('服务器响应失败');
-      //   console.log(err);
-      // })
+  methods: {
+    //页码
+    handleCurrentChange(val) {
+      this.params.pageNo = val;
+      this.initEasyTable();
+    },
+    //查询
+    onSubmit(formData) {
+      this.initEasyTable();
+    },
+    //初始化数据
+    async initEasyTable(){
+      const {params} = this
+      const result = await reqLabelInfo(params)
+      if(result.code === '0000') {
+        this.tableData = result.datas.records
+        this.total = result.datas.total
       }
-      
+    }
+  },
+  created(){
+    this.initEasyTable();
   }
 }
 </script>

@@ -6,8 +6,6 @@ import VueRouter from 'vue-router'
 import BasicManage from './BasicManage'
 import LabelManage from './LabelManage'
 import ShopManage from './ShopManage'
-
-const Home = () => import('../common/Home')
 const Login = () => import('../common/Login')
 // 声明使用插件
 Vue.use(VueRouter)
@@ -28,14 +26,14 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/home',
+      path: '/homes',
       redirect: "/home",
-      component: Home, // 返回路由组件的函数, 只有执行此函数才会加载路由组件, 这个函数在请求对应的路由路径时才会执行
+      component: () => import('../common/Home'), // 返回路由组件的函数, 只有执行此函数才会加载路由组件, 这个函数在请求对应的路由路径时才会执行
       children: [
         {
-          path: "home",
+          path: "/home",
           meta: { hidden: true },
-          component: Home
+          component: () => import('../common/Home/Home')
         }
       ]
     },

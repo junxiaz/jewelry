@@ -17,14 +17,15 @@
       </ul>
     </span>
     <span class="header-login">
-      <span class="header-login-name">欢迎，admin</span>
+      <span class="header-login-name">欢迎，{{userCode}}</span>
       <img src="./imgs/line_navigation.png" alt="">
-      <img class="header-login-out" src="./imgs/signout_icon.png" alt="">
+      <img class="header-login-out" src="./imgs/signout_icon.png" alt="" @click="logout">
     </span>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
   export default {
     data() {
       return {
@@ -50,16 +51,29 @@
         ]
       }
     },
+    computed: {
+      ...mapState(['userCode', 'token'])
+    },
     methods: {
-        goTo(i, index) {
-        console.log(i,index)
-          this.nav.map(i => {
-            i.nowImg = false;
-            return {...i};
-          })
-          this.$router.replace(i.path);
-          this.nav[index].nowImg = true;
-        }
+      goTo(i, index) {
+        this.nav.map(i => {
+          i.nowImg = false;
+          return {...i};
+        })
+        this.$router.replace(i.path);
+        this.nav[index].nowImg = true;
+      },
+      logout () {
+        this.$confirm('确认退出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.replace('/login')
+        }).catch(() => {
+          return false;
+        });
+      }
     },
   }
 </script>

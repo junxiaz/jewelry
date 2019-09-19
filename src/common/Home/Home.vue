@@ -4,9 +4,9 @@
     
     <!-- 搜索条件 myStyle,homePage样式见style.css-->
     <div class="search">
-      <el-form :inline="true" :model="params" ref="cityForm" class="demo-form-inline myStyle homePage">
+      <el-form size="medium" :inline="true" :model="params" ref="cityForm" class="demo-form-inline myStyle homePage">
         <el-form-item label="城市">
-          <el-select v-model="params.city" placeholder="城市" size="large" style="width:140px;">
+          <el-select v-model="params.city" placeholder="城市" style="width:140px;">
             <el-option label="上海" value="shanghai"></el-option>
             <el-option label="北京" value="beijing"></el-option>
           </el-select>
@@ -24,18 +24,27 @@
         style="width: 100%">
         <el-table-column fixed prop="shopName" label="店名"></el-table-column>
         <el-table-column prop="stock" label="库存"></el-table-column>
-        <el-table-column prop="province" label="预警">
-          <template slot-scope="scope">
+        <el-table-column prop="prewarning" label="预警">
+          <!-- <template slot-scope="scope">
             <span v-if="scope.row.status == '-1'">
               -{{scope.row.province}}
             </span>
             <span v-else>
               +{{scope.row.province}}
             </span>
-          </template>
+          </template> -->
         </el-table-column>
-        <el-table-column prop="contact" label="联系人"></el-table-column>
-        <el-table-column prop="phone" label="联系电话"></el-table-column>
+        <el-table-column prop="contacts" label="联系人"></el-table-column>
+        <el-table-column prop="contactNumber" label="联系电话"></el-table-column>
+        <el-table-column prop="ccMails" label="ccMails"></el-table-column>
+        <el-table-column prop="city" label="city"></el-table-column>
+        <el-table-column prop="cost" label="cost"></el-table-column>
+        <el-table-column prop="county" label="county"></el-table-column>
+        <el-table-column prop="endTime" label="endTime"></el-table-column>
+        <el-table-column prop="handoverTime" label="handoverTime"></el-table-column>
+        <el-table-column prop="shopCode" label="shopCode"></el-table-column>
+        <el-table-column prop="startTime" label="startTime"></el-table-column>
+        <el-table-column prop="toMails" label="toMails"></el-table-column>
         <el-table-column fixed="right" label="操作" width="210">
           <template slot-scope="scope">
             <el-link type="primary" @click="handleClick(scope.row)">查看详情</el-link>
@@ -60,7 +69,7 @@
 
 <script>
   import { mapState } from "vuex";
-  import { reqShopInfo } from "../../api";
+  import { reqShopInfo } from "@/api";
   export default {
     data() {
       return {
@@ -71,23 +80,12 @@
           userCode: this.$store.state.userCode,
           city: ''
         },
-        total:20,
-        tableData: [
-          {shopName:"黄金城中中国黄金",stock:"21",province:"300",contact:"小张",phone:"13412341234",status:"0"},
-          {shopName:"周大福",stock:"32",province:"10",contact:"小李",phone:"13412341234",status:"-1"},
-          {shopName:"周生生",stock:"45",province:"4000",contact:"小红",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"小明",phone:"13412341234",status:"-1"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"李红",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"王强",phone:"13412341234",status:"-1"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"丽丽",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"李潇",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"曾聪",phone:"13412341234",status:"0"},
-          {shopName:"老凤祥",stock:"666",province:"100",contact:"小露",phone:"13412341234",status:"0"},
-        ]
+        total: 0,
+        tableData: []
       }
     },
     methods: {
-       //页码
+      //页码
       handleCurrentChange(val) {
         this.params.pageNo = val;
         this.initEasyTable();
@@ -95,12 +93,10 @@
       //查询
       onSubmit(formData) {
         this.initEasyTable();
-        console.log(formData)
       },
       
       //查看详情
       handleClick(row) {
-        console.log(row);
         this.$message({
           showClose: true,
           message: '暂无详情，敬请期待',
@@ -112,12 +108,13 @@
       async initEasyTable(){
         const {params} = this
         const result = await reqShopInfo(params)
-        if(result.code === null) {
-          this.tableData = result.datas
+        if(result.code === '0000') {
+          this.tableData = result.datas.records
+          this.total = result.datas.total
         }
       }
     },
-    mounted(){
+    created(){
       this.initEasyTable();
     }
   }

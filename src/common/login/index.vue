@@ -12,7 +12,7 @@
         </el-form-item>
         <el-checkbox v-model="ruleForm.remeber">记住密码</el-checkbox>
         <el-form-item class="btn">
-          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')" to="/home">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -36,15 +36,6 @@
           } else {
             callback()
           }
-          // if (!Number.isInteger(value)) {
-          //   callback(new Error('请输入数字值'));
-          // } else {
-          //   if (value < 18) {
-          //     callback(new Error('必须年满18岁'));
-          //   } else {
-          //     callback();
-          //   }
-          // }
         }, 1000);
       };
       var validateuserPwd = (rule, value, callback) => {
@@ -53,12 +44,6 @@
         } else {
           callback()
         }
-        // else {
-        //   if (this.ruleForm.checkuserPwd !== '') {
-        //     this.$refs.ruleForm.validateField('checkuserPwd');
-        //   }
-        //   callback();
-        // }
       };
       return {
         ruleForm: {
@@ -66,6 +51,9 @@
           userCode: '',
           remeber: true
         },
+        loading: false,
+        redirect: undefined,
+        otherQuery: {},
         rules: {
           userPwd: [
             { validator: validateuserPwd, trigger: 'blur' }
@@ -78,30 +66,31 @@
     },
      //页面加载调用获取cookie值
     mounted() {
-        this.getCookie();
+      this.getCookie();
+      // this.submitForm('ruleForm');
     },
     methods: {
       //设置cookie
       setCookie(c_name, c_pwd, exdays) {
-          var exdate = new Date(); //获取时间
-          exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
-          //字符串拼接cookie
-          window.document.cookie = "userCode" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
-          window.document.cookie = "userPwd" + "=" + md5(c_pwd) + ";path=/;expires=" + exdate.toGMTString();
+        var exdate = new Date(); //获取时间
+        exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays); //保存的天数
+        //字符串拼接cookie
+        window.document.cookie = "userCode" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
+        window.document.cookie = "userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
       },
       //读取cookie
       getCookie: function() {
           if (document.cookie.length > 0) {
-              var arr = document.cookie.split('; '); //这里显示的格式需要切割一下自己可输出看下
-              for (var i = 0; i < arr.length; i++) {
-                  var arr2 = arr[i].split('='); //再次切割
-                  //判断查找相对应的值
-                  if (arr2[0] == 'userCode') {
-                      this.ruleForm.userCode = arr2[1]; //保存到保存数据的地方
-                  } else if (arr2[0] == 'userPwd') {
-                      this.ruleForm.userPwd = arr2[1];
-                  }
-              }
+            var arr = document.cookie.split('; '); //这里显示的格式需要切割一下自己可输出看下
+            for (var i = 0; i < arr.length; i++) {
+                var arr2 = arr[i].split('='); //再次切割
+                //判断查找相对应的值
+                if (arr2[0] == 'userCode') {
+                    this.ruleForm.userCode = arr2[1]; //保存到保存数据的地方
+                } else if (arr2[0] == 'userPwd') {
+                    this.ruleForm.userPwd = arr2[1];
+                }
+            }
           }
       },
       //清除cookie
@@ -111,25 +100,46 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            const {userPwd, userCode, remeber} = this.ruleForm;
+            let {userPwd, userCode, remeber} = this.ruleForm;
+            let userPass;
+            if(userPwd.length === 32) {
+              userPass = userPwd
+            } else {
+              userPass = md5(userPwd.toLocaleUpperCase());
+            }
             if(remeber) {
-              this.setCookie(userCode, userPwd, 7);
+              // 密码md5大写加密
+              this.setCookie(userCode, userPass, 7);
+            } else {
+              this.clearCookie()
             }
-            index()
-            async function index() {
-              const result = await reqUserLogin({userCode, userPwd})
-              console.log(result.token)
-              this.$store.dispatch('recordUser', {userPwd, userCode})
-            }
-            // const result = await reqUserLogin(this.ruleForm)
-            // if(result.code == null) {
-              // console.log(this.$store.state.token)
-            // }
+            this.login(userPass, userCode);
           } else {
             console.log('error submit!!');
             return false;
           }
         });
+      },
+      async login(userPwd, userCode) {
+        let result = await reqUserLogin({userCode, userPwd})
+        if(result.code === '0000') {
+          const token = result.token
+          this.loading = true
+          this.$store.dispatch('recordUser', {token, userCode})
+            .then(() => {
+              this.loading = false
+              this.$router.replace('/home')
+            }).catch(() => {
+              this.loading = false
+            })
+        } else {
+          this.$alert(result.msg, '消息', {
+            confirmButtonText: '确定',
+            callback: action => {
+              return false 
+            }
+          });
+        }
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

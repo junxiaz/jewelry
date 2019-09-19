@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/web' : {
-        target: "http://192.168.1.65:8090",
+        target: "http://192.168.1.96:8090",
         // target: "http://192.168.1.42:8080",
         // target: process.env.NODE_ENV === 'development'?'http://开发环境':'http://非开发环境',
         changeOrigin : true, //是否改变反向代理的地址

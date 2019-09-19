@@ -24,7 +24,23 @@
       <el-table :data="tableData" border style="width: 100%" class="myStyle"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
-        <el-table-column prop="position" label="位置"></el-table-column>
+        <el-table-column prop="createBy" label="createBy"></el-table-column>
+        <el-table-column prop="createTime" label="createTime"></el-table-column>
+        <el-table-column prop="handoverDate" label="handoverDate" width="280"></el-table-column>
+        <el-table-column prop="handoverType" label="handoverType"></el-table-column>
+        <el-table-column prop="id" label="id"></el-table-column>
+        <el-table-column prop="lastSurplusCount" label="lastSurplusCount"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="nowSurplusCount"></el-table-column>
+        <el-table-column prop="outCount" label="outCount"></el-table-column>
+        <el-table-column prop="productCode" label="productCode"></el-table-column>
+        <el-table-column prop="productName" label="productName"></el-table-column>
+        <el-table-column prop="saleCount" label="saleCount"></el-table-column>
+        <el-table-column prop="shopCode" label="shopCode"></el-table-column>
+        <el-table-column prop="shopName" label="shopName"></el-table-column>
+        <el-table-column prop="updateBy" label="updateBy"></el-table-column>
+        <el-table-column prop="updateTime" label="updateTime"></el-table-column>
+        <el-table-column prop="upperCabinetCount" label="upperCabinetCount"></el-table-column>
+        <!-- <el-table-column prop="position" label="位置"></el-table-column>
         <el-table-column prop="jewelryNum" label="珠宝数量"> </el-table-column>
         <el-table-column prop="cost" label="成本"></el-table-column>
         <el-table-column prop="status" label="设备状态">
@@ -32,7 +48,7 @@
             <span v-if="scope.row.status == 0">无</span>
             <span v-else-if="scope.row.status == 1">正常</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
 
       <!-- 分页 -->
@@ -51,12 +67,20 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { reqStatisticsInfo } from "@/api";
 export default {
   name:"statistics",
   data(){
-    return{  
-      params:{pageNo:1,pageSize:10},
-      total:5,    
+    return{
+      params:{
+        pageNo: 1,
+        pageSize: 10,
+        token: this.$store.state.token,
+        userCode: this.$store.state.userCode
+      },
+      total: 0,
+      tableData: [],
       imgUrl:"../../../static/images/edit_icon.png",
       numList:[
         {title:"珠宝总数",number:"1100",money:"11000000"},
@@ -65,13 +89,6 @@ export default {
         {title:"在柜珠宝",number:"1000",money:"1000000"},
         {title:"当天销售",number:"100",money:"100000"},
       ],
-      tableData: [
-        {position: '仓库一',jewelryNum: '1000',cost:"100000",status: 0},
-        {position: '黄金柜1',jewelryNum: '400',cost:"400000",status: 1},
-        {position: '黄金柜2',jewelryNum: '900',cost:"9800000",status: 1},
-        {position: '黄金柜3',jewelryNum: '900',cost:"98000",status: 0},
-        {position: '黄金柜4',jewelryNum: '500',cost:"59000",status: 0},
-      ]
     }
   },
   filters:{
@@ -79,42 +96,30 @@ export default {
       return (number).toString().replace(/\B(?=(\d{4})+(?!\d))/g, str);
     }
   },
-  methods:{
-    //更改页码
-    handleCurrentChange(val) {
-      this.params.pageNo = val;
-      this.initData();
+  methods: {
+      //页码
+      handleCurrentChange(val) {
+        this.params.pageNo = val;
+        this.initEasyTable();
+      },
+      //查询
+      onSubmit(formData) {
+        this.initEasyTable();
+      },
+      //初始化数据
+      async initEasyTable(){
+        const {params} = this
+        const result = await reqStatisticsInfo(params)
+        if(result.code === '0000') {
+          this.tableData = result.datas.records
+          this.total = result.datas.total
+        }
+      }
     },
-    updata(){
-      this.$message({
-          showClose: true,
-          message: '此功能暂未开发，敬请期待',
-          type: 'warning'
-        });
-    },
-
-     // 初始化数据
-    initData(){
-      // this.axios.post('/api/process/listProcess',this.params)
-      // .then(res => {
-      //   if( res.data.code == "0000"){
-      //     this.loading = false;
-      //     this.tableData = res.data.list;
-      //     this.tableData.map((item,index)=>{
-      //       var pageData = res.data.page;
-      //       this.tableData[index].number = (pageData.pageNo-1)*pageData.pageSize + index +1;          
-      //     });
-      //     this.total = res.data.page.totalRecord;
-      //   }
-      // })  
-      // .catch(err =>{
-      //   this.loading = true;
-      //   this.$message.error('服务器响应失败');
-      //   console.log(err);
-      // })
+    created(){
+      this.initEasyTable();
     }
   }
-}
 </script>
 
 <style scoped lang="scss">
