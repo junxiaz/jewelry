@@ -12,9 +12,8 @@
   </head>
   <body>
     <div id="app">
-      <p id="tipWord">亲，正在努力加载中...</p>
+      <p id="tipWord">亲，正在努力加载中...</>
     </div>
     <!-- built files will be auto injected -->
-    
   </body>
 </html>

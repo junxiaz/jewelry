@@ -10,8 +10,8 @@ import ShopManage from './ShopManage'
 Vue.use(VueRouter)
 
 export default new VueRouter({
-  // mode:'history',
-  mode: 'hash',
+  mode:'history',
+  // mode: 'hash',
   // 所有路由
   routes: [
     {
