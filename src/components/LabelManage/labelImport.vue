@@ -13,21 +13,25 @@
       <!-- 主体 -->
       <el-form ref="form" :model="form" label-width="76px" class="mt20px myStyle" :inline="true">
         <el-form-item label="选择文件">
-          <el-input v-model="form.name" placeholder="请上传附件" size="medium" style="width:320px;"></el-input>
-          
-        </el-form-item>
-        <el-form-item>
           <el-upload 
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="string"
+            ref="upload"
             accept=".xls,.xlsx"
             :on-success="uploadSuccess"
             :on-preview="handlePreview" 
             :on-remove="handleRemove"
             :before-upload="beforeUpload"
             :on-exceed="handleExceed"
-            :multiple="false" :limit="1"  :file-list="fileList"
+            :http-request="uploadFile"
+            :multiple="false" :limit="1"  
+            :file-list="fileList"
+            :auto-upload="false"
             :show-file-list="true">
-            <el-button type="text" size="medium" style="margin-left:5px;">
+            <el-input ref="input" size="medium" placeholder="请选择附件" style="width:320px;"></el-input>
+          
+        <!-- </el-form-item>
+        <el-form-item> -->
+            <el-button type="text" size="medium" style="margin-left:5px; vertical-aligin:middle">
               <img src="../../../static/images/upload_icon.png"/>
             </el-button>
 
@@ -41,6 +45,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import classNotes from '@/common/classNotes'
 export default {
   name:"labelImport",
@@ -50,10 +55,11 @@ export default {
   data(){
     return {
       form: {
-          name: '',
-          url:[]
+        name: '',
+        url:[]
       },
-      fileList:[]
+      fileList: [],
+      formData: '',
     }
   },
   methods:{
@@ -65,6 +71,13 @@ export default {
         fileName.push(item.name);
       })
       this.form.name = fileName.join(",")
+      if(this.form.name !== '') {
+        // this.$refs.input.disabled = 'true'
+        // this.$refs.input.$attrs.placeholder = ''
+      }
+    },
+    uploadFile(file) {
+      this.formData.append('file', file.file)
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -81,13 +94,31 @@ export default {
 
     //确认提交
     onSubmit() {
-      console.log('submit!');
+      let formData = new formData();
+      formData.append('file', this.fileList[0].raw)
+
+      axios({
+        url: '',
+        method: 'post',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data;charset=utf-8'
+        }
+      }).then(res => {
+        if(res.code === '0000') {
+          this.$message.sucess('上传文件成功')
+        } else {
+          this.$message.warning(res.msg)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .mt20px{margin-top:20px;}
 .label-import{
   background:#fff;
@@ -106,4 +137,5 @@ export default {
     }
   }
 }
+.myStyle .el-upload-list {position: absolute; top: 1px;left: 3px; width: 318px; background: #ccc; }
 </style>
