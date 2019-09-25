@@ -1,4 +1,4 @@
-# tcplatform
+# jewelry
 
 > A Vue.js project
 
