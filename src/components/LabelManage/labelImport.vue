@@ -77,7 +77,7 @@ export default {
       }
 
       axios({
-        url: '/web/tag/importTagInfo',
+        url: 'http://101.231.106.162:9105/jewelry/web/tag/importTagInfo',
         method: 'post',
         data: formData,
         headers: {

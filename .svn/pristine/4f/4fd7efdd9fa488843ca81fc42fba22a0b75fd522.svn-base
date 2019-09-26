@@ -41,7 +41,6 @@ import "@/common/js" //引入公共的js代码，并将方法挂载到原型上
 // Vue.prototype.initEasyTable = initEasyTable;
 // Vue.prototype.initDate = initDate;
 
-//获取年月日
 Vue.filter('getDate',(data)=>{
   if(data){
     return data.slice(0,10);
