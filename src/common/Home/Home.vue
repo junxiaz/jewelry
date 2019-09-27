@@ -7,8 +7,7 @@
       <el-form size="medium" :inline="true" :model="params" ref="cityForm" class="demo-form-inline myStyle homePage">
         <el-form-item label="城市">
           <el-select v-model="params.city" placeholder="城市" style="width:140px;">
-            <el-option label="上海" value="shanghai"></el-option>
-            <el-option label="北京" value="beijing"></el-option>
+            <el-option label="长沙" value="长沙"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
