@@ -24,22 +24,23 @@
       <el-table :data="tableData" border style="width: 100%" class="myStyle"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
-        <el-table-column prop="createBy" label="createBy"></el-table-column>
+        <el-table-column prop="shopCode" label="门店编码"></el-table-column>
+        <el-table-column prop="shopName" label="门店名称"></el-table-column>
+        <el-table-column prop="productCode" label="产品编码"></el-table-column>
+        <el-table-column prop="productName" label="产品名称"></el-table-column>
+        <el-table-column prop="lastSurplusCount" label="上日结余"></el-table-column>
+        <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
+        <el-table-column prop="outCount" label="调出"></el-table-column>
+        <el-table-column prop="saleCount" label="销售"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="当前结余"></el-table-column>
+
+        <!-- <el-table-column prop="createBy" label="createBy"></el-table-column>
         <el-table-column prop="createTime" label="createTime"></el-table-column>
         <el-table-column prop="handoverDate" label="handoverDate" width="280"></el-table-column>
         <el-table-column prop="handoverType" label="handoverType"></el-table-column>
         <el-table-column prop="id" label="id"></el-table-column>
-        <el-table-column prop="lastSurplusCount" label="lastSurplusCount"></el-table-column>
-        <el-table-column prop="nowSurplusCount" label="nowSurplusCount"></el-table-column>
-        <el-table-column prop="outCount" label="outCount"></el-table-column>
-        <el-table-column prop="productCode" label="productCode"></el-table-column>
-        <el-table-column prop="productName" label="productName"></el-table-column>
-        <el-table-column prop="saleCount" label="saleCount"></el-table-column>
-        <el-table-column prop="shopCode" label="shopCode"></el-table-column>
-        <el-table-column prop="shopName" label="shopName"></el-table-column>
         <el-table-column prop="updateBy" label="updateBy"></el-table-column>
-        <el-table-column prop="updateTime" label="updateTime"></el-table-column>
-        <el-table-column prop="upperCabinetCount" label="upperCabinetCount"></el-table-column>
+        <el-table-column prop="updateTime" label="updateTime"></el-table-column> -->
         <!-- <el-table-column prop="position" label="位置"></el-table-column>
         <el-table-column prop="jewelryNum" label="珠宝数量"> </el-table-column>
         <el-table-column prop="cost" label="成本"></el-table-column>

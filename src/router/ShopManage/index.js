@@ -21,16 +21,16 @@ export default {
         },
         {
           path:"/ShopManage/inventoryInfo",
-          name:"盘点信息",
+          name:"盘点库存",
           meta:{hidden:false},
           component : () => import('@/components/ShopManage/inventoryInfo.vue'),
         },
-        {
-          path:"/ShopManage/stock",
-          name:"实时库存",
-          meta:{hidden:false},
-          component : () => import('@/components/ShopManage/stock.vue'),
-        },
+        // {
+        //   path:"/ShopManage/stock",
+        //   name:"实时库存",
+        //   meta:{hidden:false},
+        //   component : () => import('@/components/ShopManage/stock.vue'),
+        // },
         // {
         //   path:"history",
         //   name:"历史记录",

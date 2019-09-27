@@ -94,6 +94,8 @@
           </el-select>
         </el-form-item>
       </el-form>
+
+      <el-button type="primary" @click="submitUpload" size="medium">提交</el-button>
     </div>
 
     <!-- 添加弹框 -->

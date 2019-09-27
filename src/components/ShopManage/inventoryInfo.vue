@@ -33,14 +33,16 @@
       <el-table :data="tableData" border style="width: 100%" class="myStyle" v-loading="loading"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
-        <el-table-column prop="productName" label="名称" show-overflow-tooltip> </el-table-column>
-        <!-- <el-table-column prop="handoverDesc" label="handoverDesc"> </el-table-column> -->
-        <el-table-column prop="lastSurplusCount" label="上日结余"> </el-table-column>
-        <el-table-column prop="nowSurplusCount" label="当前结余"> </el-table-column>
-        <el-table-column prop="outCount" label="调出"> </el-table-column>
-        <el-table-column prop="saleCount" label="销售"> </el-table-column>
-        <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip> </el-table-column>
-        <el-table-column prop="upperCabinetCount" label="上柜"> </el-table-column>
+        <el-table-column prop="shopCode" label="门店编码"></el-table-column>
+        <el-table-column prop="shopName" label="门店名称"></el-table-column>
+        <el-table-column prop="handoverDate" label="日期"></el-table-column>
+        <el-table-column prop="handoverType" label="类型"></el-table-column>
+        <el-table-column prop="productCode" label="产品编码"></el-table-column>
+        <el-table-column prop="productName" label="产品名称"></el-table-column>
+        <el-table-column prop="lastSurplusCount" label="上日结余"></el-table-column>
+        <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
+        <el-table-column prop="outCount" label="调出"></el-table-column>
+        <el-table-column prop="saleCount" label="销售"></el-table-column>
       </el-table>
 
       <!-- 分页 -->

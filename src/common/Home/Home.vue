@@ -22,9 +22,18 @@
       <el-table :data="tableData" border fit class="myStyle"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'50px',padding:'0 6px'}"
         style="width: 100%">
-        <el-table-column fixed prop="shopName" label="店名"></el-table-column>
+        <el-table-column prop="shopCode" label="门店编码"></el-table-column>
+        <el-table-column prop="shopName" label="门店名称"></el-table-column>
+        <el-table-column prop="city" label="城市"></el-table-column>
+        <el-table-column prop="county" label="区域"></el-table-column>
+        <el-table-column prop="contactNumber" label="联系方式"></el-table-column>
+        <el-table-column prop="contacts" label="联系人"></el-table-column>
         <el-table-column prop="stock" label="库存"></el-table-column>
-        <el-table-column prop="prewarning" label="预警">
+        <el-table-column prop="cost" label="成本"></el-table-column>
+        <el-table-column prop="prewarning" label="预警线"></el-table-column>
+        <el-table-column prop="startTime" label="上班时间"></el-table-column>
+        <el-table-column prop="endTime" label="下班时间"></el-table-column>
+        <el-table-column prop="handoverTime" label="交接时间"></el-table-column>
           <!-- <template slot-scope="scope">
             <span v-if="scope.row.status == '-1'">
               -{{scope.row.province}}
@@ -33,18 +42,6 @@
               +{{scope.row.province}}
             </span>
           </template> -->
-        </el-table-column>
-        <el-table-column prop="contacts" label="联系人"></el-table-column>
-        <el-table-column prop="contactNumber" label="联系电话"></el-table-column>
-        <el-table-column prop="ccMails" label="ccMails"></el-table-column>
-        <el-table-column prop="city" label="city"></el-table-column>
-        <el-table-column prop="cost" label="cost"></el-table-column>
-        <el-table-column prop="county" label="county"></el-table-column>
-        <el-table-column prop="endTime" label="endTime"></el-table-column>
-        <el-table-column prop="handoverTime" label="handoverTime"></el-table-column>
-        <el-table-column prop="shopCode" label="shopCode"></el-table-column>
-        <el-table-column prop="startTime" label="startTime"></el-table-column>
-        <el-table-column prop="toMails" label="toMails"></el-table-column>
         <el-table-column fixed="right" label="操作" width="210">
           <template slot-scope="scope">
             <el-link type="primary" @click="handleClick(scope.row)">查看详情</el-link>
@@ -97,11 +94,7 @@
       
       //查看详情
       handleClick(row) {
-        this.$message({
-          showClose: true,
-          message: '暂无详情，敬请期待',
-          type: 'warning'
-        });
+        this.$router.push('/home/stock')
       },
 
       //初始化数据

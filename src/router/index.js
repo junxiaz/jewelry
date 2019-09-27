@@ -27,7 +27,7 @@ export default new VueRouter({
       ]
     },
     {
-      path: '/homes',
+      path: '/home',
       redirect: "/home",
       component: () => import('../common/Home'), // 返回路由组件的函数, 只有执行此函数才会加载路由组件, 这个函数在请求对应的路由路径时才会执行
       children: [
@@ -35,7 +35,13 @@ export default new VueRouter({
           path: "/home",
           meta: { hidden: true },
           component: () => import('../common/Home/Home')
-        }
+        },
+        {
+          path: "/home/stock",
+          name: "实时库存",
+          meta: { hidden: true },
+          component: () => import('@/components/ShopManage/stock.vue'),
+        },
       ]
     },
     ShopManage,
@@ -45,7 +51,5 @@ export default new VueRouter({
       path: "*",
       component: () => ("@/common/notFound/index.vue"),
     }
-
-
   ]
 })
