@@ -10,15 +10,15 @@
         <div v-if="index===1">
           <h5>{{item.title}}</h5>
           <p><span>{{item.number}}</span> 元
-            <img :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
+            <img :src="imgUrl" @click="updata(item.number)" alt="修改"></img>
           </p>
           <p>
             <span>{{item.money | numberStyle(",")}}</span> 元
           </p>
         </div>
-        <div v-else>
+        <div v-else="index===1">
           <h5>{{item.title}}</h5>
-          <p><span>{{item.number}}</span> 件</p>
+          <p><span>{{item.number}}</span> 元</p>
           <p><span>{{item.money | numberStyle(",")}}</span> 元</p>
         </div>
       </el-col>
@@ -67,26 +67,14 @@
         </el-col>
       </el-row>
     </div>
-
-    <!-- 弹框 -->
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose">
-      <el-input v-model="preWarning" size="medium"></el-input>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="updateShopPrewarning">确 定</el-button>
-      </span>
-    </el-dialog>
+    
 
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { reqRealTimeStatisticsInfo, updateShopPrewarning } from "@/api";
+import { reqStatisticsInfo } from "@/api";
 export default {
   name:"statistics",
   data(){
@@ -95,22 +83,18 @@ export default {
         pageNum: 1,
         pageSize: 10,
         token: this.$store.state.token,
-        userCode: this.$store.state.userCode,
-        shopCode: this.$store.state.shopCode,
-        productCode: ''
+        userCode: this.$store.state.userCode
       },
       total: 0,
       tableData: [],
       imgUrl:require("../../../static/images/edit_icon.png"),
       numList:[
-        {title:"珠宝总数",number:"",money:""},
-        {title:"预警线",number:"",money:""},
-        {title:"在库珠宝",number:"",money:""},
-        {title:"在柜珠宝",number:"",money:""},
-        {title:"当天销售",number:"",money:""},
+        {title:"珠宝总数",number:"1100",money:"11000000"},
+        {title:"预警线",number:"80000",money:"+30000"},
+        {title:"在库珠宝",number:"100",money:"1000000"},
+        {title:"在柜珠宝",number:"1000",money:"1000000"},
+        {title:"当天销售",number:"100",money:"100000"},
       ],
-      preWarning: '',
-      dialogVisible: false
     }
   },
   filters:{
@@ -130,51 +114,11 @@ export default {
       },
       //初始化数据
       async initEasyTable(){
-        const {params, numList} = this
-        const result = await reqRealTimeStatisticsInfo(params)
+        const {params} = this
+        const result = await reqStatisticsInfo(params)
         if(result.code === '0000') {
           this.tableData = result.datas.records
           this.total = result.datas.total
-          this.preWarning = result.prewarning || 0
-          numList[0].number = result.totalCount || 0
-          numList[0].money = result.totalPrice || 0
-          numList[1].number = result.prewarning || 0
-          numList[1].money = result.dvalue || 0
-          numList[2].number = result.warehouseCount || 0
-          numList[2].money = result.warehousePrice || 0
-          numList[3].number = result.counterCount || 0
-          numList[3].money = result.counterPrice || 0
-          numList[4].number = result.saleCount || 0
-          numList[4].money = result.salePrice || 0
-        }
-      },
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      },
-      async updateShopPrewarning() {
-        let datas = {}
-        datas.token = this.$store.state.token
-        datas.userCode = this.$store.state.userCode
-        datas.shopCode = this.$store.state.shopCode
-        datas.prewarning = this.preWarning
-        const res = await updateShopPrewarning(datas)
-        console.log(datas)
-        if(res.code === '0000') {
-          this.dialogVisible = false
-          this.initEasyTable();
-          this.$message({
-            type: 'success',
-            message: '修改成功'
-          })
-        } else {
-          this.$message({
-            type: 'warning',
-            message: res.msg
-          })
         }
       }
     },
