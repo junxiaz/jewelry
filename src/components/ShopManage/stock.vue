@@ -73,7 +73,7 @@ export default {
           pageNum: 1,
           pageSize: 10,
           productCode:"",
-          shopCode:"",
+          shopCode:this.$store.state.shopCode,
           token: this.$store.state.token,
           userCode: this.$store.state.userCode,
         },
