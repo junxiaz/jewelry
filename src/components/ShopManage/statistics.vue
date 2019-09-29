@@ -7,7 +7,12 @@
     <!-- 数量统计 -->
     <el-row class="count" type="flex" justify="space-between">
       <el-col :span="4" :class="'style'+index" align="left" v-for="(item,index) in numList" :key="index">
-        <div v-if="index===1">
+        <div v-if="index===0">
+          <h5>{{item.title}}</h5>
+          <p><span>{{item.number}}</span> 元/克</p>
+          <p><span>{{item.money | numberStyle(",")}}</span></p>
+        </div>
+        <div v-else-if="index===2">
           <h5>{{item.title}}</h5>
           <p><span>{{item.number}}</span> 元
             <img :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
@@ -103,9 +108,9 @@ export default {
       tableData: [],
       imgUrl:require("../../../static/images/edit_icon.png"),
       numList:[
+        {title:"实时金价",number:"",money:""},
         {title:"珠宝总数",number:"",money:""},
         {title:"预警线",number:"",money:""},
-        {title:"在库珠宝",number:"",money:""},
         {title:"在柜珠宝",number:"",money:""},
         {title:"当天销售",number:"",money:""},
       ],
@@ -136,12 +141,12 @@ export default {
           this.tableData = result.datas.records
           this.total = result.datas.total
           this.preWarning = result.prewarning || 0
-          numList[0].number = result.totalCount || 0
-          numList[0].money = result.totalPrice || 0
-          numList[1].number = result.prewarning || 0
-          numList[1].money = result.dvalue || 0
-          numList[2].number = result.warehouseCount || 0
-          numList[2].money = result.warehousePrice || 0
+          numList[0].number = result.glodPrice || 0
+          numList[0].money = result.createTime || 0
+          numList[1].number = result.totalCount || 0
+          numList[1].money = result.totalPrice || 0
+          numList[2].number = result.prewarning || 0
+          numList[2].money = result.dvalue || 0
           numList[3].number = result.counterCount || 0
           numList[3].money = result.counterPrice || 0
           numList[4].number = result.saleCount || 0

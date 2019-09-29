@@ -1,6 +1,6 @@
 import ajax from './ajax'
-// const BASE_URL = 'http://101.231.106.162:9105/jewelry/web'
-const BASE_URL = 'http://192.168.1.96:8090/jewelry/web'
+const BASE_URL = 'http://101.231.106.162:9105/jewelry/web'
+// const BASE_URL = 'http://192.168.1.96:8090/jewelry/web'
 
 export const reqUserLogin = ({ userCode, userPwd }) => ajax(BASE_URL + '/user/webUserLoginp', { userCode, userPwd }, 'POST') //用户名登录
 export const reqShopInfo = (searchData) => ajax(BASE_URL + '/shop/listShopInfo', searchData, 'POST') //首页门店列表

@@ -44,6 +44,7 @@
         <el-table-column prop="productCode" label="产品编码"></el-table-column>
         <el-table-column prop="productName" label="产品名称"></el-table-column>
         <el-table-column prop="lastSurplusCount" label="上日结余"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="当前结余"></el-table-column>
         <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
         <el-table-column prop="outCount" label="调出"></el-table-column>
         <el-table-column prop="saleCount" label="销售"></el-table-column>

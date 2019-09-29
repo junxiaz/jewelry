@@ -16,16 +16,12 @@
                           @select="((item) => {handleSelect(item,'product')})" >
           </el-autocomplete>
         </el-form-item>
-        <el-form-item label="店名" prop="shopCode">
-          <!-- <el-select v-model="form.shopName" filterable placeholder="请选择店名">
-            <el-option v-for="shop in form.shopList" :key="shop.shopCode" :label="shop.shopName" :value="shop.shopCode">
-            </el-option>
-          </el-select> -->
+        <!-- <el-form-item label="店名" prop="shopCode">
           <el-autocomplete v-model="form.shopName" placeholder="请输入店名" :debounce=0 style="width:230px;"
                           :fetch-suggestions="((queryString, cb)=>{querySearch(queryString, cb,'shop')})" 
                           @select="((item) => {handleSelect(item,'shop')})" >
           </el-autocomplete>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="initEasyTable()">查询</el-button>
         </el-form-item>
