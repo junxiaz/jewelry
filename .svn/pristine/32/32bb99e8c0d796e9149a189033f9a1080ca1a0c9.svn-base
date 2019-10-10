@@ -8,10 +8,9 @@
       <el-form ref="form" :model="form" class="formStyle myStyle" :inline="true" size="medium">
         <el-form-item label="交接班类型" prop="handoverType">
           <el-select v-model="form.handoverType" clearable  placeholder="请选择交接班">
-            <el-option label="全部" value=""></el-option>
             <el-option label="上班" :value="1"></el-option>
-            <el-option label="交接" :value="2"></el-option>
             <el-option label="下班" :value="3"></el-option>
+            <el-option label="交接" :value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="品名" prop="productCode">          
@@ -39,15 +38,16 @@
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
         <el-table-column prop="shopCode" label="门店编码"></el-table-column>
-        <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="shopName" label="门店名称"></el-table-column>
+        <el-table-column prop="handoverDate" label="日期"></el-table-column>
         <el-table-column prop="handoverDesc" label="类型"></el-table-column>
         <el-table-column prop="productCode" label="产品编码"></el-table-column>
-        <el-table-column prop="productName" label="产品名称" show-overflow-tooltip=""></el-table-column>
+        <el-table-column prop="productName" label="产品名称"></el-table-column>
         <el-table-column prop="lastSurplusCount" label="上日结余"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="当前结余"></el-table-column>
         <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
         <el-table-column prop="outCount" label="调出"></el-table-column>
         <el-table-column prop="saleCount" label="销售"></el-table-column>
-        <el-table-column prop="handoverDate" label="日期"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -87,7 +87,7 @@ export default {
           productName:"",
           productCode:"",
           shopName: '',
-          shopCode: '',
+          shopCode: '',   
           handoverDate:"",
           handoverType:"",
           productList:[],
@@ -106,15 +106,8 @@ export default {
       //
       search(data){
         this.params.handoverType = this.$refs[data].model.handoverType;
-        //this.params.handoverDate = this.$refs[data].model.handoverDate;        
-        if(this.form.productName == ""){
-          this.params.productCode = "";
-        }
-        if(this.form.shopName == ""){
-          this.params.shopCode = "";
-        }
+        this.params.handoverDate = this.$refs[data].model.handoverDate;
         this.initEasyTable();
-        // return false;
       },
 
       //带建议搜索输入框---开始
@@ -142,13 +135,12 @@ export default {
         return (restaurant) => {
           return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) !== -1);
         };
-        console.log(restaurant)
 
       },
       //已经选择好的关于该字段的所有信息
       handleSelect(item,name) {
         if(name == 'product'){
-          this.params.productCode = item.productCode;         
+          this.params.productCode = item.productCode;
         }
         else if(name == 'shop'){
           this.params.shopCode = item.shopCode;
