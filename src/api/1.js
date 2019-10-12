@@ -128,7 +128,7 @@ option = {
         type: 'map',
         map: 'china',
         label: {
-            show: true,
+            show: true
         },
         roam: false,
         itemStyle: {
@@ -137,29 +137,36 @@ option = {
                 borderWidth: 2
             },
             emphasis: {
-                areaColor: "#01fea8"
+                areaColor: "",
             }
+        }
+    },
+    tooltip: {
+        show: true,
+        trigger: 'item',
+        enterable: true,
+        triggerOn: 'mousemove',
+        position: 'inside',
+        formatter: function (data, ticket, callback) {
+            // if (data.name) return;
+            // var html = data[0].name + '<br/>';
+            // for (var i=0; i<data.length; i++) {
+            //     html += data[i].seriesName + " : " + data[i].data + "% <br/>";
+            // }
+            return "<a href='http://www.baidu.com'>" + data.name + "查看详情</a>";
         }
     },
     series: [{ // 含引导线的省份，用lines实现
         type: 'lines',
         label: {
             show: true,
-            // position: "top",
             backgroundColor: "rgba(95,120,254,0.20)",
             padding: [10, 12],
             lineHeight: 32,
             color: '#5F78FE',
             borderColor: '#5F78FE',
             borderWidth: 1,
-            // formatter:'{b}<br/>{c}份'
-            formatter: function (params) {
-                //   var res = '';
-                //   res = params.data.name + '\n' + params.data.value + '家门店  ' + '';
-                //   return res;
-                var str = '(a href="#")查看(/a)';
-                return str;
-            },
+            formatter: '{b}\n{c}家门店'
         },
         lineStyle: {
             type: 'solid',

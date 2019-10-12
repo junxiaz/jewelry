@@ -1,15 +1,15 @@
 <template>
   <div class="container">
     <!-- 图表 -->
-    <div id="mapContainer" style="width:1200px; height:636px"></div>
+    <div id="mapContainer" style="min-width:1200px; height:636px"></div>
   </div>
 </template>
 
 <script>
 // 引入基本模板
 let echarts = require("echarts/lib/echarts");
-// require("echarts/map/js/province/guangzhou");
-// require("echarts/map/js/province/hunan");
+// require("echarts/map/js/china");
+require("echarts/map/js/province/hunan");
 
 export default {
   name: "Home",
@@ -19,7 +19,175 @@ export default {
   methods: {
     drawMap() {
       let myChart = echarts.init(document.getElementById("mapContainer"));
+      let option = null;
 
+      const geoCoordMap = {
+        长沙市: [112.9812698,	28.20082474],
+        岳阳市: [113.0980682,	29.37461853],
+        湘潭市: [112.9150238,	27.87335014],
+        张家界市: [110.4814835,	29.13187981],
+        常德市: [111.6876297,	29.03820992],
+        益阳市: [112.3340683,	28.60197067],
+        湘西土家族苗族自治州: [109.7389287, 28.31173554],
+        怀化市: [109.9542313, 27.54740715],
+        娄底市: [111.9938965, 27.74133492],
+        邵阳市: [111.4773789,	27.25023651],
+        衡阳市: [112.5993576,	26.90055466],
+        永州市: [111.6121979,	26.2112999],
+        郴州市: [113.0286484,	25.80229187],
+        株洲市: [113.1520615,	27.85422325]
+      }
+
+      let data = {
+        长沙市: Math.round(Math.random() * 1000),
+        岳阳市: Math.round(Math.random() * 1000),
+        湘潭市: Math.round(Math.random() * 1000),
+        张家界市: Math.round(Math.random() * 1000),
+        常德市: Math.round(Math.random() * 1000),
+        益阳市: Math.round(Math.random() * 1000),
+        湘西土家族苗族自治州: Math.round(Math.random() * 1000),
+        怀化市: Math.round(Math.random() * 1000),
+        娄底市: Math.round(Math.random() * 1000),
+        邵阳市: Math.round(Math.random() * 1000),
+        衡阳市: Math.round(Math.random() * 1000),
+        永州市: Math.round(Math.random() * 1000),
+        郴州市: Math.round(Math.random() * 1000),
+        株洲市: Math.round(Math.random() * 1000)
+      }
+
+      // 保存引导线末端的坐标
+      let linesEndCoords = {
+        长沙市: [geoCoordMap["长沙市"][0]+ 2.6, geoCoordMap["长沙市"][1]],
+        岳阳市: [geoCoordMap["岳阳市"][0] + 2.5, geoCoordMap["岳阳市"][1] + 0.5],
+        湘潭市: [geoCoordMap["湘潭市"][0] + 2.7, geoCoordMap["湘潭市"][1] - 0.4],
+        张家界市: [geoCoordMap["张家界市"][0] - 3, geoCoordMap["张家界市"][1] + 0.6],
+        常德市: [geoCoordMap["常德市"][0] - 4, geoCoordMap["常德市"][1]],
+        益阳市: [geoCoordMap["益阳市"][0] + 3.3, geoCoordMap["益阳市"][1] + 0.4],
+        湘西土家族苗族自治州: [geoCoordMap["湘西土家族苗族自治州"][0] - 2, geoCoordMap["湘西土家族苗族自治州"][1]],
+        怀化市: [geoCoordMap["怀化市"][0] - 3, geoCoordMap["怀化市"][1]],
+        娄底市: [geoCoordMap["娄底市"][0] - 5, geoCoordMap["娄底市"][1] - 1],
+        邵阳市: [geoCoordMap["邵阳市"][0] - 4, geoCoordMap["邵阳市"][1] - 1.3],
+        衡阳市: [geoCoordMap["衡阳市"][0] + 3, geoCoordMap["衡阳市"][1] - 1],
+        永州市: [geoCoordMap["永州市"][0] - 4.2, geoCoordMap["永州市"][1] - 1],
+        郴州市: [geoCoordMap["郴州市"][0] + 2.6, geoCoordMap["郴州市"][1] - 0.7],
+        株洲市: [geoCoordMap["株洲市"][0] + 2.4, geoCoordMap["株洲市"][1] - 1.2],
+      };
+
+      const colorList = ["#705fe0", "#b6acfe", "#a397f2", "#7667d8", "#b2a6ff", "#6050cc"];
+
+      //查看详情
+      function handleClick() {
+        // this.$router.push('/home/stock/' + id)
+        this.$router.push('/home/stock')
+      }
+
+      // lines引导线数据和坐标
+      function dataLines(city, data) {
+        var res = [];
+        city.forEach(name => {
+          res.push({
+            name: name,
+            value: data[name],
+            coords: [geoCoordMap[name], linesEndCoords[name]]
+          });
+        });
+        return res;
+      }
+
+      option = {
+        geo: {
+          type: "map",
+          map: "湖南",
+          label: {
+            show: true
+          },
+          roam: false,
+          itemStyle: {
+            normal: {
+              borderColor: "#fff",
+              borderWidth: 2
+            },
+            emphasis: {
+              areaColor: ""
+            }
+          }
+        },
+        tooltip: {
+          show: true,
+          trigger: "item",
+          enterable: true,
+          triggerOn: "click",
+          position: "inside",
+          formatter: (data, ticket, callback) => {
+            this.$router.push('/home/stock?id=' + data.value);
+            debugger
+            // return (
+            //   `<a javascript="this.handleClick()">${data.name}查看详情</a>`
+            // );
+          }
+        },
+        series: [
+          {
+            // 含引导线的省份，用lines实现
+            type: "lines",
+            symbol: 'circle',
+            symbolSize: ['8', '8'],
+            label: {
+              show: true,
+              backgroundColor: "rgba(95,120,254,.20)",
+              padding: [5, 12],
+              lineHeight: 22,
+              color: "#5F78FE",
+              borderColor: "#5F78FE",
+              borderWidth: 1,
+              // formatter: "{b}\n{c}家门店"
+              formatter: function(params) {
+                return (
+                  "{fline|" +
+                  params.data.name +
+                  "}\n" +
+                  params.data.value +
+                  "家门店  {tline|查看详情}"
+                );
+              },
+              rich: {
+                  fline: {
+                    align: 'center'
+                  },
+                  tline: {
+                    fontWeight: 600
+                  }
+                }
+            },
+            lineStyle: {
+              type: "solid",
+              color: "#5F78FE",
+              opacity: 1,
+              width: 2
+            },
+            data: dataLines(['长沙市', '岳阳市', '湘潭市', '张家界市', '常德市', '益阳市', '湘西土家族苗族自治州', '怀化市', '娄底市', '邵阳市', '衡阳市', '永州市', '郴州市', '株洲市'],data)
+          },
+          {
+            type: "map",
+            geoIndex: 0,
+            itemStyle: {
+              normal: {
+                color: function(params) {
+                  if (params.dataIndex >= 6) {
+                    return colorList[
+                      params.dataIndex - 6 * Math.floor(params.dataIndex / 6)
+                    ];
+                  } else {
+                    return colorList[params.dataIndex];
+                  }
+                }
+              }
+            }
+          }
+        ]
+      };
+
+      myChart.setOption(option);
     },
     drawMap2() {
       let myChart = echarts.init(document.getElementById("mapContainer"));
@@ -49,10 +217,10 @@ export default {
         { name: "株洲市", value: 14 }
       ];
       var geoCoordMap = {
-        "长沙市": [113.0823, 28.2568],
-        "长沙市": [113.0823, 28.2568],
-        "长沙市": [113.0823, 28.2568],
-        "长沙市": [113.0823, 28.2568],
+        长沙市: [113.0823, 28.2568],
+        长沙市: [113.0823, 28.2568],
+        长沙市: [113.0823, 28.2568],
+        长沙市: [113.0823, 28.2568]
       };
       let convertData = function(data, type) {
         /*type:1 地图参数；type:2数据参数*/
@@ -92,7 +260,6 @@ export default {
           roam: false,
           itemStyle: {
             normal: {
-              // areaColor: '#525',
               areaColor: function(params) {
                 if (params.dataIndex >= 6) {
                   return colorList[
@@ -121,7 +288,7 @@ export default {
               normal: {
                 show: true,
                 formatter: function(params) {
-                  console.log(params)
+                  console.log(params);
                   return (
                     "{fline|客户：" +
                     params.data.name +
@@ -162,7 +329,7 @@ export default {
             name: "hunan",
             type: "map",
             map: "湖南",
-			      geoIndex: 0,
+            geoIndex: 0,
             z: 0,
             // type: "effectScatter",
             // coordinateSystem: "geo",
@@ -357,7 +524,12 @@ export default {
         }
       };
       myChart.setOption(option);
-    }
+    },
+    //查看详情
+    handleClick() {
+      console.log('1')
+      this.$router.push('/home/stock')
+    },
   },
   mounted() {
     this.drawMap();
@@ -368,7 +540,8 @@ export default {
 <style lang="scss" scoped>
 .container {
   margin-top: 20px;
-  padding: 30px 40px 20px;
+  text-align: center;
+  // padding: 30px 40px 20px;
   background: #fff;
   .pagination {
     padding-top: 15px;
