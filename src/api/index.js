@@ -21,4 +21,3 @@ export const reqAddProductInfo = (searchData) => ajax(BASE_URL + '/product/addPr
 export const reqUpdateProductInfo = (searchData) => ajax(BASE_URL + '/product/updateProductInfo', searchData, 'POST') //产品信息--更改产品信息
 
 
-export const hunan = () => ajax(BASE_URL + '/product/updateProductInfo', searchData, 'POST') //产品信息--更改产品信息
