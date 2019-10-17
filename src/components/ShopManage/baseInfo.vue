@@ -98,7 +98,8 @@
         </el-form-item>
       </el-form>
 
-      <el-button type="primary" @click="submit" size="medium">提交</el-button>
+      <!-- <el-button type="primary" @click="submit" size="medium">提交</el-button> -->
+      <el-button type="primary" @click="submit" size="medium" v-has>提交</el-button>
     </div>
 
     <!-- 添加弹框 -->

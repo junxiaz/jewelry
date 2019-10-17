@@ -8,7 +8,10 @@ export default {
     {
       path:"/BasicManage/variety",
       name:"品种管理",
-      meta:{hidden:false},
+      meta:{
+        hidden:false,
+        btnPermissions: ['UT00001'], //页面需要的权限
+      },
       component : () => import('@/components/BasicManage/variety.vue'),
     },
     // {

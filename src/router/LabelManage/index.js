@@ -10,7 +10,10 @@ export default {
       {
         path:"/LabelManage/labelImport",
         name:"标签导入",
-        meta:{hidden:false},
+        meta:{
+          hidden:false,
+          btnPermissions: ['UT00001'], //页面需要的权限
+        },
         component : () => import('@/components/LabelManage/labelImport.vue'),
       },
       {

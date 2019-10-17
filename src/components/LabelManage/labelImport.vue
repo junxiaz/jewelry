@@ -36,7 +36,7 @@
         </el-form-item>
       </el-form>
       
-      <el-button type="primary" @click="submitUpload" size="medium">提交</el-button>
+      <el-button type="primary" @click="submitUpload" size="medium" v-has>提交</el-button>
     </div>
   </div>
 </template>

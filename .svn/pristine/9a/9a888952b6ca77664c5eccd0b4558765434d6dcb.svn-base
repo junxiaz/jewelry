@@ -1,18 +1,11 @@
 <template>
   <div class="inventoryInfo themeBg">
-    <!-- 盘点库存 -->
+    <!-- 盘点历史 -->
     <h3>长沙黄金城中国黄金</h3>
     
     <div class="main">
       <!-- 表单 -->
       <el-form ref="form" :model="form" class="formStyle myStyle" :inline="true" size="medium">
-        <el-form-item label="交接班类型" prop="handoverType">
-          <el-select v-model="form.handoverType" clearable  placeholder="请选择交接班">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="上班" :value="1"></el-option>
-            <el-option label="交接" :value="2"></el-option>
-            <el-option label="下班" :value="3"></el-option>
-          </el-select>
         </el-form-item>
         <el-form-item label="品名" prop="productCode">          
           <el-autocomplete v-model="form.productName" placeholder="请输入品名" :debounce=0 style="width:230px;"
@@ -27,7 +20,7 @@
           </el-autocomplete>
         </el-form-item>
         <el-form-item label="日期">
-          <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="日期" v-model="form.handoverDate" style="width: 230px;"></el-date-picker>
+          <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="日期" v-model="form.checkTagDate" style="width: 230px;"></el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search('form')">查询</el-button>
@@ -38,16 +31,12 @@
       <el-table :data="tableData" border style="width: 100%" class="myStyle" v-loading="loading"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
-        <el-table-column prop="shopCode" label="门店编码" fixed="left"></el-table-column>
-        <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip fixed="left"></el-table-column>
+        <el-table-column prop="bill" label="盘点单号" fixed="left"></el-table-column>
         <el-table-column prop="productCode" label="产品编码"></el-table-column>
         <el-table-column prop="productName" label="产品名称" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="handoverDesc" label="类型"></el-table-column>
-        <el-table-column prop="lastSurplusCount" label="上日结余"></el-table-column>
-        <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
-        <el-table-column prop="outCount" label="调出"></el-table-column>
-        <el-table-column prop="saleCount" label="销售"></el-table-column>
-        <el-table-column prop="handoverDate" label="日期" width="124"></el-table-column>
+        <el-table-column prop="count" label="盘点数量" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip fixed="left"></el-table-column>
+        <el-table-column prop="date" label="日期" width="124px"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -66,7 +55,7 @@
 </template>
 
 <script>
-import { reqStatisticsInfo,reqProductOPT,reqShopOPT } from "@/api";
+import { reqCheckTagStatistics,reqProductOPT,reqShopOPT } from "@/api";
 export default {
   name:"inventoryInfo",
   data() {
@@ -76,8 +65,8 @@ export default {
           pageNum: 1,
           pageSize: 10,
           productCode:"",
-          handoverDate:"",
-          handoverType:0,          
+          handoverType:"",
+          checkTagDate:"",      
           shopCode:"",
           token: this.$store.state.token,
           userCode: this.$store.state.userCode,
@@ -88,7 +77,7 @@ export default {
           productCode:"",
           shopName: '',
           shopCode: '',
-          handoverDate:"",
+          checkTagDate:"",
           handoverType:"",
           productList:[],
           shopList:[]
@@ -106,7 +95,7 @@ export default {
       //
       search(data){
         this.params.handoverType = this.$refs[data].model.handoverType;
-        this.params.handoverDate = this.$refs[data].model.handoverDate;        
+        this.params.checkTagDate = this.$refs[data].model.checkTagDate;        
         if(this.form.productName == ""){
           this.params.productCode = "";
         }
@@ -159,7 +148,7 @@ export default {
      // 初始化数据
       async initEasyTable(){
         const {params} = this
-        const result = await reqStatisticsInfo(params)
+        const result = await reqCheckTagStatistics(params)
         if(result.code === '0000') {
           this.loading = false;
           this.tableData = result.datas.records

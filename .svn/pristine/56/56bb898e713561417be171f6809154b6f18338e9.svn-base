@@ -1,18 +1,11 @@
 <template>
   <div class="inventoryInfo themeBg">
-    <!-- 盘点库存 -->
+    <!-- 盘点历史 -->
     <h3>长沙黄金城中国黄金</h3>
     
     <div class="main">
       <!-- 表单 -->
       <el-form ref="form" :model="form" class="formStyle myStyle" :inline="true" size="medium">
-        <el-form-item label="交接班类型" prop="handoverType">
-          <el-select v-model="form.handoverType" clearable  placeholder="请选择交接班">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="上班" :value="1"></el-option>
-            <el-option label="交接" :value="2"></el-option>
-            <el-option label="下班" :value="3"></el-option>
-          </el-select>
         </el-form-item>
         <el-form-item label="品名" prop="productCode">          
           <el-autocomplete v-model="form.productName" placeholder="请输入品名" :debounce=0 style="width:230px;"
@@ -47,7 +40,7 @@
         <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
         <el-table-column prop="outCount" label="调出"></el-table-column>
         <el-table-column prop="saleCount" label="销售"></el-table-column>
-        <el-table-column prop="handoverDate" label="日期" width="124"></el-table-column>
+        <el-table-column prop="handoverDate" label="日期" width="124px"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -113,6 +106,7 @@ export default {
         if(this.form.shopName == ""){
           this.params.shopCode = "";
         }
+        debugger
         this.initEasyTable();
         // return false;
       },

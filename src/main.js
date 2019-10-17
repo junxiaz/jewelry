@@ -40,6 +40,7 @@ import 'babel-polyfill'//引入babel-polyfill,兼容ie浏览器
 import "@/common/js" //引入公共的js代码，并将方法挂载到原型上
 // Vue.prototype.initEasyTable = initEasyTable;
 // Vue.prototype.initDate = initDate;
+import has from '@/common/js/btnPermissions.js';
 
 //获取年月日
 Vue.filter('getDate',(data)=>{

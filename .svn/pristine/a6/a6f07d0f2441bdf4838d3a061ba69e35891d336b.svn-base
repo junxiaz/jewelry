@@ -113,6 +113,7 @@ export default {
         if(this.form.shopName == ""){
           this.params.shopCode = "";
         }
+        debugger
         this.initEasyTable();
         // return false;
       },

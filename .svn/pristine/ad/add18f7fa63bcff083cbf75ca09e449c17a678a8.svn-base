@@ -12,21 +12,23 @@
           <h5>{{item.title}}</h5>
           <p><span>{{item.number}}</span> 元/克</p>
           <p><span>{{item.money | numberStyle(",")}}</span></p>
+          <p><span>{{item.gramWeight}}</span> 克</p>
         </div>
         <div v-else-if="index===2">
           <h5>{{item.title}}</h5>
           <p><span>{{item.number}}</span> 元
-            <img v-has :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
+            <img :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
           </p>
           <p>
             <span>{{item.money | numberStyle(",")}}</span> 元
           </p>
+          <p><span>{{item.gramWeight}}</span> 克</p>
         </div>
         <div v-else>
           <h5>{{item.title}}</h5>
           <p><span>{{item.number}}</span> 件</p>
           <p><span>{{item.money | numberStyle(",")}}</span> 元</p>
-          <p v-has><span>{{item.gramWeight}}</span> 克</p>
+          <p><span>{{item.gramWeight}}</span> 克</p>
         </div>
       </el-col>
     </el-row>

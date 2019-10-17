@@ -3,8 +3,8 @@
   <!-- 品种管理 -->
   <h2 class="mb24px">长沙黄金城中国黄金</h2>
     <div class="main">
-      <el-button type="primary" size="small" @click="addDialog = true">新增</el-button>
-      <el-button type="primary" size="small"  @click="openUpdateDialog">修改</el-button>
+      <el-button type="primary" size="small" @click="addDialog = true" v-has>新增</el-button>
+      <el-button type="primary" size="small"  @click="openUpdateDialog" v-has>修改</el-button>
       <!-- <el-button type="primary" size="small">删除</el-button> -->
 
       <!-- 表格 -->
