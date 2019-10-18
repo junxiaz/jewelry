@@ -45,9 +45,9 @@
         <el-table-column prop="outCount" label="调出"></el-table-column>
         <el-table-column prop="saleCount" label="销售"></el-table-column>
         <el-table-column prop="nowSurplusCount" label="当前结余" min-width="100"></el-table-column>
-        <el-table-column prop="cost" label="成本" v-if="userTypeCode == 'UT00001'"></el-table-column>
-        <el-table-column prop="goldenWeight" label="总重量" v-if="userTypeCode == 'UT00001'"></el-table-column>
-        <el-table-column prop="marketPrice" label="市场价" v-if="userTypeCode == 'UT00001'"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="成本" v-if="userTypeCode == 'UT00001'"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="总重量" v-if="userTypeCode == 'UT00001'"></el-table-column>
+        <el-table-column prop="nowSurplusCount" label="市场价" v-if="userTypeCode == 'UT00001'"></el-table-column>
 
       </el-table>
 
@@ -90,7 +90,8 @@ export default {
         pageSize: 10,
         token: this.$store.state.token,
         userCode: this.$store.state.userCode,
-        shopCode: this.$store.state.shopCode
+        shopCode: this.$store.state.shopCode,
+        productCode: ''
       },
       total: 0,
       usserTypeCode:"",
@@ -102,7 +103,7 @@ export default {
         {title:"预警线",number:"",money:"",gramWeight:""},
         {title:"在柜珠宝",number:"",money:"",gramWeight:""},
         {title:"当天销售",number:"",money:"",gramWeight:""},
-        {title:"在库珠宝",number:"",money:"",gramWeight:""},
+        {title:"在库珠宝",number:"0",money:"0",gramWeight:""},
       ],
       preWarning: '',
       dialogVisible: false
@@ -136,19 +137,19 @@ export default {
           // numList[0].gramWeight = result.createTime || 0
           numList[1].number = result.totalCount || 0
           numList[1].money = result.totalPrice || 0
-          numList[1].gramWeight = result.totalWeight || 0
+          // numList[1].gramWeight = result.createTime || 0
           numList[2].number = result.prewarning || 0
           numList[2].money = result.dvalue || 0
           // numList[2].gramWeight = result.createTime || 0
           numList[3].number = result.counterCount || 0
           numList[3].money = result.counterPrice || 0
-          numList[3].gramWeight = result.counterWeight || 0
+          // numList[3].gramWeight = result.createTime || 0
           numList[4].number = result.saleCount || 0
           numList[4].money = result.salePrice || 0
-          numList[4].gramWeight = result.saleWeight || 0
-          numList[5].number = result.warehouseCount || 0
-          numList[5].money = result.warehousePrice || 0
-          numList[5].gramWeight = result.warehouseWeight || 0
+          // numList[4].gramWeight = result.createTime || 0
+          // numList[5].number = result.saleCount || 0
+          // numList[5].money = result.salePrice || 0
+          // numList[5].gramWeight = result.createTime || 0
         }
       },
       handleClose(done) {
