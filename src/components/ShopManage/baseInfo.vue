@@ -34,53 +34,67 @@
     </classNotes>
 
     <div class="shifts pl34px">
-      <div class="week"><span>平日/周末加班时间</span></div>
+      <div class="week"><span>平日交接班时间</span></div>
 
       <el-form ref="shiftsForm" :model="shopForm" :inline="true" class="myStyle shifts">
         <el-form-item label="早班">
-          <el-input v-model="shopForm.startTime" size="medium" style="width:78px"></el-input>
+          <el-time-picker v-model="shopForm.startTime" size="medium" style="width:78px"
+            :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" 
+            placeholder="" prefix-icon="noIcon">
+          </el-time-picker> 
+          <!-- <el-input v-model="shopForm.startTime" size="medium" style="width:78px"></el-input> -->
           <el-button type="text" size="medium" style="color:#474747;">时</el-button>
         </el-form-item>
 
         <el-form-item label="中班">
-          <el-input v-model="shopForm.handoverTime" size="medium" style="width:78px"></el-input>
+          <el-time-picker v-model="shopForm.handoverTime" size="medium" style="width:78px"
+            :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
+            placeholder="" prefix-icon="noIcon">
+          </el-time-picker> 
+          <!-- <el-input v-model="shopForm.handoverTime" size="medium" style="width:78px"></el-input> -->
           <el-button type="text" size="medium" style="color:#474747">时</el-button>
         </el-form-item>
 
         <el-form-item label="晚班">
-          <el-input v-model="shopForm.endTime" size="medium" style="width:78px"></el-input>
+          <el-time-picker v-model="shopForm.endTime" size="medium" style="width:78px"
+            :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
+            placeholder="" prefix-icon="noIcon">
+          </el-time-picker> 
+          <!-- <el-input v-model="shopForm.endTime" size="medium" style="width:78px"></el-input> -->
           <el-button type="text" size="medium" style="color:#474747">时</el-button>
         </el-form-item>
       </el-form>
 
-      <div class="special" v-show="false">
-        <span>特殊加班时间</span>
+      <div class="special">
+        <span>特殊交接班时间</span>
         <el-button icon="el-icon-plus" @click="addDialog = true">添加加班时间</el-button>
       </div>
       
-      <el-table v-show="false" :data="tableData" border style="width: 100%" class="myStyle"
+      <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border style="width: 100%" class="myStyle"
         :header-cell-style="{background: '#F5F9FF',color: '#5F9EE0 ',fontSize: '16px',height:'35px',padding:0}"
         :cell-style="{padding:0,height:'35px',color:'#474747',fontSize:'16px',lineHeight:'35px'}"
         :row-style="{height:'35px'}"
       >
-        <el-table-column prop="date" label="时间"></el-table-column>
-        <el-table-column prop="morning" label="早班"> </el-table-column>
-        <el-table-column prop="noon" label="中班"></el-table-column>
-        <el-table-column prop="night" label="晚班"></el-table-column>
-        <el-table-column prop="remarks" label="备注"></el-table-column>
+        <el-table-column prop="specialDate" label="日期"></el-table-column>
+        <el-table-column prop="startTime" label="早班"> </el-table-column>
+        <el-table-column prop="handoverTime" label="中班"></el-table-column>
+        <el-table-column prop="endTime" label="晚班"></el-table-column>
+        <el-table-column prop="dateDesc" label="备注"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-edit-outline" size="medium" @click="openUpdateDialog(scope.row)"></el-button>
-            <el-button type="text" icon="el-icon-delete" size="medium" @click="deleteTable(scope.row)"></el-button>
+            <el-button type="text" icon="el-icon-edit-outline" size="medium" @click="openUpdateDialog(scope.row,scope.$index)"></el-button>
+            <el-button type="text" icon="el-icon-delete" size="medium" @click="deleteTable(scope.$index)"></el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <!-- 分页 -->
-      <el-row v-show="false" style="margin-top:15px;">
+      <el-row style="margin-top:15px;">
         <el-col :span="12" :offset="12" align="right">
           <el-pagination background layout="total,prev, pager, next" class="myStyle"
-            :total="3">
+          @current-change="handleCurrentChange"
+            :page-size="pageSize" :current-page="currentPage"
+            :total="tableData.length">
           </el-pagination>
         </el-col>
       </el-row>
@@ -98,29 +112,36 @@
         </el-form-item>
       </el-form>
 
-      <!-- <el-button type="primary" @click="submit" size="medium">提交</el-button> -->
-      <el-button type="primary" @click="submit" size="medium" v-has>提交</el-button>
+      <el-button type="primary" @click="submitAllDate" size="medium" v-has>提交</el-button>
     </div>
 
     <!-- 添加弹框 -->
     <el-dialog title="添加加班时间" :visible.sync="addDialog" width="30%"
       :before-close="handleClose">
       <el-form ref="addTimeForm" :model="addTimeForm" :rules="addTimeRules" class="myStyle" size="mini" label-width="90px">
-        <el-form-item label="时间" prop="dateTime">
-          <el-input v-model="addTimeForm.dateTime" placeholder="请输入加班日期"></el-input>
+        <el-form-item label="日期" prop="dateTime">
+          <el-date-picker v-model="addTimeForm.dateTime" type="date" placeholder="选择日期" @change="checkDate(addTimeForm.dateTime,'add')"></el-date-picker>
         </el-form-item>
-        <el-form-item label="加班班次" prop="timeType">
-          <el-select v-model="addTimeForm.timeType" placeholder="请选择加班班次" class="size-full">
-            <el-option label="早班" value="0"></el-option>
-            <el-option label="中班" value="1"></el-option>
-            <el-option label="晚班" value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="加班时间" prop="specificTime">
-          <el-time-picker v-model="addTimeForm.specificTime" class="size-full"
+        <el-form-item label="早班" prop="morning">
+          <el-time-picker v-model="addTimeForm.morning" 
             :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
-            placeholder="请输入加班时间">
-          </el-time-picker>
+            placeholder="请输入早班时间">
+          </el-time-picker> 
+        </el-form-item>
+        <el-form-item label="中班" prop="noon">
+          <el-time-picker v-model="addTimeForm.noon" 
+            :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
+            placeholder="请输入中班时间">
+          </el-time-picker> 
+        </el-form-item>
+        <el-form-item label="晚班" prop="night">
+          <el-time-picker v-model="addTimeForm.night" 
+            :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
+            placeholder="请输入晚班时间">
+          </el-time-picker>          
+        </el-form-item>
+        <el-form-item label="备注" prop="remarks">
+          <el-input type="textarea" :rows="2" placeholder="请输入备注内容" v-model="addTimeForm.remarks" resize="none"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -130,20 +151,25 @@
     </el-dialog>
 
     <!-- 修改弹框 -->
-    <el-dialog title="修改加班时间" :visible.sync="updateDialog" width="30%"
-      :before-close="handleClose">
-      <el-form ref="updateTimeForm" :model="updateTimeForm" class="myStyle" size="mini" label-width="80px">
+    <el-dialog title="修改加班时间" :visible.sync="updateDialog" width="30%">
+      <el-form ref="updateTimeForm" :model="updateTimeForm"  :rules="addTimeRules" class="myStyle" size="mini" label-width="80px">
         <el-form-item label="时间" prop="dateTime">
-          <el-input v-model="updateTimeForm.dateTime" placeholder="请输入加班日期"></el-input>
+          <el-date-picker v-model="updateTimeForm.dateTime" type="date" placeholder="请输入加班日期" @change="checkDate(updateTimeForm.dateTime,'update')"></el-date-picker>
         </el-form-item>
         <el-form-item label="早班" prop="morning">
-          <el-input v-model="updateTimeForm.morning" placeholder="请输入早班时间"></el-input>
+          <el-time-picker v-model="updateTimeForm.morning" placeholder="请输入早班时间"
+                          :picker-options="{ selectableRange: '00:00:00 - 23:59:59'}">
+          </el-time-picker>
         </el-form-item>
         <el-form-item label="中班" prop="noon">
-          <el-input v-model="updateTimeForm.noon" placeholder="请输入中班时间"></el-input>
+          <el-time-picker v-model="updateTimeForm.noon" placeholder="请输入中班时间"
+                          :picker-options="{ selectableRange: '00:00:00 - 23:59:59'}">
+          </el-time-picker>
         </el-form-item>
         <el-form-item label="晚班" prop="night">
-          <el-input v-model="updateTimeForm.night" placeholder="请输入晚班时间"></el-input>
+          <el-time-picker v-model="updateTimeForm.night" placeholder="请输入晚班时间"
+                          :picker-options="{ selectableRange: '00:00:00 - 23:59:59'}">
+          </el-time-picker>
         </el-form-item>
         <el-form-item label="备注" prop="timeType">
           <el-input type="textarea" :rows="2" placeholder="请输入备注内容" v-model="updateTimeForm.remarks" resize="none"></el-input>
@@ -160,7 +186,7 @@
 </template>
 
 <script>
-import { reqShopDetails, updateShopDetails } from '@/api'
+import { reqShopDetails, updateShopDetails,reqGetShopInfoSpecialTime } from '@/api'
 import classNotes from "@/common/classNotes"
 export default {
   name:"baseInfo",
@@ -174,37 +200,34 @@ export default {
         userCode: this.$store.state.userCode,
         shopCode: this.$store.state.shopCode
       },
-      params:{pageNo:1,pageSize:10},
-      total:3,
+      currentPage:1,
+      pageSize:10,
       shopForm: {},
-      shiftsForm:{
-        morning:"09:00",
-        noon:"",
-        night:""
-      },
+      shiftsForm:{},
       riskForm:{
         risk:""
       },
-      tableData: [
-        {id:0,date: '2016-05-03',morning:'09:00',noon:'',night:'',remarks:"元旦"},
-        {id:1,date: '2016-05-03',morning:'',noon:'14:00',night:'',remarks:"清明"},
-        {id:2,date: '2016-05-03',morning:'',noon:'',night:'21:00',remarks:"春节"},
-      ],
+      tableData: [],
       addDialog:false, //添加弹框
       addTimeForm:{
         dateTime:"",
-        timeType:"",
-        specificTime:""
+        morning:"",
+        noon:"",
+        night:"",
+        remarks:""
       },
       addTimeRules:{
         dateTime:[
-          { required: true, message: '请输入加班日期', trigger: 'blur' },
+          { required: true, message: '请输入加班日期', trigger: 'change' },
         ],
-        timeType:[          
-          { required: true, message: '请选择班次类型', trigger: 'change' },
+        morning: [
+          { type: 'date', required: true, message: '请填早班', trigger: 'change' }
         ],
-        specificTime:[          
-          { required: true, message: '请输入具体时间', trigger: 'blur' },
+        noon: [
+          { type: 'date', required: true, message: '请填早班', trigger: 'change' }
+        ],
+        night: [
+          { type: 'date', required: true, message: '请填早班', trigger: 'change' }
         ]
       },
       updateDialog:false,
@@ -215,135 +238,214 @@ export default {
         night:"",
         remarks:""
       },
+      updateId:0, //存下修改时的id
+      updateDate:'',//存下修改时的日期，方便判断是否重复
     }
   },
+
   methods:{
+    //改变页数
+    handleCurrentChange(val){
+      this.currentPage = val;
+    },
     //确认弹框是否关闭
     handleClose(done) {
       this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
+      .then(_ => {
+        done();
+      })
+      .catch(_ => {});   
+      this.$refs['addTimeForm'].resetFields(); 
     },
+
     // 取消添加弹框
     closeDialog(formName){
       if(formName == "addTimeForm"){
         this.addDialog = false;
+        this.$refs[formName].resetFields();
       }
       else if(formName == "updateTimeForm"){
         this.updateDialog = false;
       }
-      this.$refs[formName].resetFields();
     },
 
-    //添加加班时间
-    submitOvertime(formName) {
-      if(formName == "addTimeForm"){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {      
-            // this.axios.post('/api/process/createProcess',formName)
-            // .then(res => {
-            //   if( res.status == 200){
-            //     this.$message({
-            //       message: '恭喜你，数据添加成功',
-            //       type: 'success',
-            //       offset:100
-            //     });
-                this.addDialog = false;
-            //     this.initData();
-            //   }
-            //   this.$refs[formName].resetFields();//重置            
-            // })
-          } else {
+    //检查日期是否重复
+    checkDate(dates,formName){
+      dates = this.formatDate(dates);      
+      if(formName === 'add'){
+        this.tableData.forEach((val,index) =>{
+          if(val.specialDate.indexOf(dates)>-1){
             this.$message({
-              message: '请输入完整信息再确认',
-              type: 'warning',
-              duration:2000,
+              message:"时间重复，请重新选择",
+              type:"warning",
               offset:100
-            });
-            return false;
+            })
+            this.addTimeForm.dateTime = "";
           }
-        });
+        })
+      } 
+      else if(formName === "update"){
+        // console.log('日期',dates)
+        // console.log('日期',this.updateDate)
+        //修改后的时间与原来的时间不相同时要判断,相同时不用
+        if(dates != this.updateDate){
+          this.tableData.forEach((val,index) =>{
+            if(val.specialDate.indexOf(dates)>-1){
+              this.$message({
+                message:"时间重复，请重新选择",
+                type:"warning",
+                offset:100
+              })
+              this.updateTimeForm.dateTime = "";
+            }
+          })  
+        }           
 
-      }
-      else if(formName == "updateTimeForm"){
-        // this.axios.post('/api/process/createProcess',formName)
-            // .then(res => {
-            //   if( res.status == 200){
-            //     this.$message({
-            //       message: '恭喜你，数据修改成功',
-            //       type: 'success',
-            //       offset:100
-            //     });
-                this.updateDialog = false;
-            //     this.initData();
-            //   }
-            //   this.$refs[formName].resetFields();//重置            
-            // })
       }
     },
 
     // 打开修改弹框
-    openUpdateDialog(formData){
+    openUpdateDialog(formData,index){
       this.updateDialog = true;
-      this.updateTimeForm.dateTime = formData.date;
-      this.updateTimeForm.morning = formData.morning;
-      this.updateTimeForm.noon = formData.noon;
-      this.updateTimeForm.night = formData.night;
-      this.updateTimeForm.remarks = formData.remarks;
-      // this.axios.post('/api/process/listProcess',formData)
-      // .then(res => {
-      // })  
-      // .catch(err =>{
-      //   this.loading = true;
-      //   this.$message.error('服务器响应失败');
-      //   console.log(err);
-      // })
+      this.updateId = (this.currentPage -1)*this.pageSize + index;
+      this.updateDate = formData.specialDate; //字符，保存日期
+      this.updateTimeForm.dateTime = formData.specialDate;
+      var adate = formData.specialDate.split("-");
+      var astartTime = [];
+      var anoonTime = [];
+      var aendTime = [];
+      if(formData.startTime){
+        astartTime = formData.startTime.split(":");
+        astartTime[2] = astartTime[2] ? astartTime[2] : "00";
+        this.updateTimeForm.morning = new Date(adate[0],adate[1],adate[2],astartTime[0],astartTime[1],astartTime[2]);
+      }
+      if(formData.handoverTime){
+        anoonTime = formData.handoverTime.split(":");
+        // if(!anoonTime[2]){
+        //   anoonTime[2] = "00";
+        // }
+        anoonTime[2] = anoonTime[2] ? anoonTime[2] : "00";
+        this.updateTimeForm.noon = new Date(adate[0],adate[1],adate[2],anoonTime[0],anoonTime[1],anoonTime[2]);
+      }
+      if(formData.endTime){
+        aendTime = formData.endTime.split(":");
+        aendTime[2] = aendTime[2] ? aendTime[2] : "00";
+        this.updateTimeForm.night = new Date(adate[0],adate[1],adate[2],aendTime[0],aendTime[1],aendTime[2]);
+      }  
+      this.updateTimeForm.remarks = formData.dateDesc;
     },  
 
-    //删除表格信息
-    deleteTable(id){
-      this.$confirm('确认要删除该信息吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {          
-      // this.axios.post('/api/process/createProcess',id)
-            // .then(res => {
-            //   if( res.status == 200){
-            //     this.$message({
-            //       message: '删除成功',
-            //       type: 'success',
-            //       offset:100
-            //     });
-            //     this.initData();
-            //   }   
-            // })
-        }).catch(() => {
+    //添加/修改加班时间
+    submitOvertime(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {  
+          if(formName == "addTimeForm"){
+            this.addDialog = false;
+            this.tableData.unshift({
+              "specialDate" : this.formatDate(this.addTimeForm.dateTime),
+              "startTime" : this.formatTime(this.addTimeForm.morning),
+              "handoverTime" : this.formatTime(this.addTimeForm.noon),
+              "endTime" : this.formatTime(this.addTimeForm.night),
+              "dateDesc":this.addTimeForm.remarks,
+            });
+            this.$refs[formName].resetFields();
+          } else if(formName == "updateTimeForm"){              
+            this.updateDialog = false;
+            var specialDate = "";
+            var startTime = "";
+            var handoverTime = "";
+            var endTime = "";
+            specialDate = (typeof this.updateTimeForm.dateTime) == "object" ? this.formatDate(this.updateTimeForm.dateTime) : this.updateTimeForm.dateTime; 
+            startTime = (typeof this.updateTimeForm.morning) == "object" ? this.formatTime(this.updateTimeForm.morning) : this.updateTimeForm.morning; 
+            handoverTime = (typeof this.updateTimeForm.noon) == "object" ? this.formatTime(this.updateTimeForm.noon) : this.updateTimeForm.noon; 
+            endTime = (typeof this.updateTimeForm.night) == "object" ? this.formatTime(this.updateTimeForm.night) : this.updateTimeForm.night; 
+
+            this.tableData[this.updateId] = {
+              "specialDate" : specialDate,
+              "startTime" : startTime,
+              "handoverTime" : handoverTime,
+              "endTime" : endTime,
+              "dateDesc":this.updateTimeForm.remarks,
+            }
+          }
+
+        } else {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+            message: '请输入完整信息再确认',
+            type: 'warning',
+            duration:1000,
+            offset:100
+          });
+          return false;
+        }
+      });
     },
 
+    //删除表格信息
+    deleteTable(index){
+      var id = (this.currentPage -1)*this.pageSize + index;//点击删除时的序号
+      this.tableData.splice(index,1);
+      //处理表格中的删除最后一条显示暂无数据的问题
+      const totalPage = Math.ceil((this.tableData.length - 1) / this.pageSize) // 总页数
+      this.currentPage = this.currentPage > totalPage ? totalPage : this.currentPage;
+      this.currentPage = this.currentPage < 1 ? 1 : this.currentPage;
+    },
+
+    //提交所有数据
+    submitAllDate(){
+      this.submit();
+      this.initData();
+      window.history.go(0);
+    },
 
      // 初始化数据
     async initData(){
       const {initParams} = this
       const result = await reqShopDetails(initParams)
       if(result.code === '0000') {
-        this.shopForm = result.shop
+        this.shopForm = result.shop;
+        var astartTime = [];
+        var anoonTime = [];
+        var aendTime = [];
+        if(this.shopForm.startTime){
+          astartTime = this.shopForm.startTime.split(":");
+          this.shopForm.startTime = new Date('2019','10','21',astartTime[0],astartTime[1],astartTime[2]);
+        }
+        if(this.shopForm.handoverTime){
+          anoonTime = this.shopForm.handoverTime.split(":");
+          this.shopForm.handoverTime = new Date('2019','10','21',anoonTime[0],anoonTime[1],anoonTime[2]);
+        }
+        if(this.shopForm.endTime){
+          aendTime = this.shopForm.endTime.split(":");
+          this.shopForm.endTime = new Date('2019','10','21',aendTime[0],aendTime[1],aendTime[2]);
+        }
+        this.tableData = result.specialTimes;
         // this.total = result.datas.total
       }
     },
 
     //修改门店信息
     async submit() {
-      let datas = this.shopForm
-      datas.token = this.$store.state.token
-      datas.userCode = this.$store.state.userCode
+      this.shopForm.startTime = this.formatTime(this.shopForm.startTime);
+      this.shopForm.handoverTime = this.formatTime(this.shopForm.handoverTime);
+      this.shopForm.endTime = this.formatTime(this.shopForm.endTime);
+      let datas = {
+        "ccMails": this.shopForm.ccMails,
+        "city": this.shopForm.city,
+        "contactNumber": this.shopForm.contactNumber,
+        "contacts": this.shopForm.contacts,
+        "county": this.shopForm.county,
+        "endTime": this.shopForm.endTime,
+        "handoverTime": this.shopForm.handoverTime,
+        "shopCode": this.shopForm.shopCode,
+        "shopName": this.shopForm.shopName,
+        "startTime":this.shopForm.startTime,
+        "toMails":this.shopForm.toMails,
+        "specialTimes":this.tableData
+      }
+
+      datas.token = this.$store.state.token;
+      datas.userCode = this.$store.state.userCode;
       const result = await updateShopDetails(datas)
       if(result.code === '0000') {
         this.$message({
@@ -356,7 +458,30 @@ export default {
             type: 'warning'
           });
       }
+    },
+
+    //日期格式化
+    formatDate(d){
+      if(d){
+        var month = (d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
+        var day = d.getDate() + '' < 10 ? '0' + d.getDate() + '' : d.getDate() + '';
+        return d.getFullYear() +"-"+ month +"-"+ day;
+      } else {
+        d = "";
+      }
+    },
+    //时间格式化
+    formatTime(d){
+      if(d){
+        var hour = d.getHours()+"" < 10 ? "0"+d.getHours() +'' : d.getHours()+"";
+        var min = d.getMinutes()+"" < 10 ? "0"+d.getMinutes() +'' : d.getMinutes()+"";
+        var second = d.getSeconds()+"" < 10 ? "0"+d.getSeconds() +'' : d.getSeconds()+"";
+        return hour +":"+ min +":"+ second;
+      } else {
+        d = "";
+      }
     }
+
   },
   mounted() {
     this.initData()
@@ -394,4 +519,5 @@ export default {
     margin-top: 8px;
   }
 }
+
 </style>
