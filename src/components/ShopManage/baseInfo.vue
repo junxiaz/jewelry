@@ -40,7 +40,7 @@
         <el-form-item label="早班">
           <el-time-picker v-model="shopForm.startTime" size="medium" style="width:78px"
             :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" 
-            placeholder="" prefix-icon="noIcon">
+            placeholder="" prefix-icon="noIcon" :clearable="false">
           </el-time-picker> 
           <!-- <el-input v-model="shopForm.startTime" size="medium" style="width:78px"></el-input> -->
           <el-button type="text" size="medium" style="color:#474747;">时</el-button>
@@ -49,7 +49,7 @@
         <el-form-item label="中班">
           <el-time-picker v-model="shopForm.handoverTime" size="medium" style="width:78px"
             :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
-            placeholder="" prefix-icon="noIcon">
+            placeholder="" prefix-icon="noIcon" :clearable="false">
           </el-time-picker> 
           <!-- <el-input v-model="shopForm.handoverTime" size="medium" style="width:78px"></el-input> -->
           <el-button type="text" size="medium" style="color:#474747">时</el-button>
@@ -58,7 +58,7 @@
         <el-form-item label="晚班">
           <el-time-picker v-model="shopForm.endTime" size="medium" style="width:78px"
             :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
-            placeholder="" prefix-icon="noIcon">
+            placeholder="" prefix-icon="noIcon" :clearable="false">
           </el-time-picker> 
           <!-- <el-input v-model="shopForm.endTime" size="medium" style="width:78px"></el-input> -->
           <el-button type="text" size="medium" style="color:#474747">时</el-button>
@@ -67,7 +67,7 @@
 
       <div class="special">
         <span>特殊交接班时间</span>
-        <el-button icon="el-icon-plus" @click="addDialog = true">添加加班时间</el-button>
+        <el-button icon="el-icon-plus" @click="addDialog = true">添加交接班时间</el-button>
       </div>
       
       <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border style="width: 100%" class="myStyle"
@@ -112,11 +112,11 @@
         </el-form-item>
       </el-form>
 
-      <el-button type="primary" @click="submitAllDate" size="medium" v-has>提交</el-button>
+      <el-button type="primary" @click="submitAll()" size="medium" v-has>提交</el-button>
     </div>
 
     <!-- 添加弹框 -->
-    <el-dialog title="添加加班时间" :visible.sync="addDialog" width="30%"
+    <el-dialog title="添加交接班时间" :visible.sync="addDialog" width="30%"
       :before-close="handleClose">
       <el-form ref="addTimeForm" :model="addTimeForm" :rules="addTimeRules" class="myStyle" size="mini" label-width="90px">
         <el-form-item label="日期" prop="dateTime">
@@ -151,7 +151,7 @@
     </el-dialog>
 
     <!-- 修改弹框 -->
-    <el-dialog title="修改加班时间" :visible.sync="updateDialog" width="30%">
+    <el-dialog title="修改交接班时间" :visible.sync="updateDialog" width="30%">
       <el-form ref="updateTimeForm" :model="updateTimeForm"  :rules="addTimeRules" class="myStyle" size="mini" label-width="80px">
         <el-form-item label="时间" prop="dateTime">
           <el-date-picker v-model="updateTimeForm.dateTime" type="date" placeholder="请输入加班日期" @change="checkDate(updateTimeForm.dateTime,'update')"></el-date-picker>
@@ -392,10 +392,8 @@ export default {
     },
 
     //提交所有数据
-    submitAllDate(){
-      this.submit();
-      this.initData();
-      window.history.go(0);
+    submitAll(){
+      this.addUpdate();
     },
 
      // 初始化数据
@@ -407,6 +405,7 @@ export default {
         var astartTime = [];
         var anoonTime = [];
         var aendTime = [];
+        // console.log(this.shopForm.startTime)
         if(this.shopForm.startTime){
           astartTime = this.shopForm.startTime.split(":");
           this.shopForm.startTime = new Date('2019','10','21',astartTime[0],astartTime[1],astartTime[2]);
@@ -425,7 +424,8 @@ export default {
     },
 
     //修改门店信息
-    async submit() {
+    async addUpdate() {
+      console.log(this.shopForm.startTime)
       this.shopForm.startTime = this.formatTime(this.shopForm.startTime);
       this.shopForm.handoverTime = this.formatTime(this.shopForm.handoverTime);
       this.shopForm.endTime = this.formatTime(this.shopForm.endTime);
@@ -452,6 +452,7 @@ export default {
           message: '修改成功',
           type: 'success'
         });
+        this.initData();
       } else {
           this.$message({
             message: result.msg,
