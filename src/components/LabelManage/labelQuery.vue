@@ -11,11 +11,13 @@
         <el-form-item label="状态">
           <el-select v-model="params.status" placeholder="请选择状态" style="width:180px;">
             <el-option label="全部" value=""></el-option>
+            <el-option label="初始化" value="0"></el-option>
             <el-option label="已入库" value="1"></el-option>
             <el-option label="已上柜" value="2"></el-option>
-            <el-option label="已调出" value="3"></el-option>
-            <el-option label="已销售" value="4"></el-option>
-            <el-option label="已退货" value="5"></el-option>
+            <el-option label="异常" value="3"></el-option>
+            <el-option label="已调出" value="4"></el-option>
+            <el-option label="已销售" value="5"></el-option>
+            <el-option label="已退货" value="6"></el-option>
           </el-select> 
         </el-form-item>
         <el-form-item label="产品名称">

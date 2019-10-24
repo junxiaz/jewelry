@@ -70,6 +70,7 @@
         <el-button icon="el-icon-plus" @click="addDialog = true">添加交接班时间</el-button>
       </div>
       
+      <!-- 表格 -->
       <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border style="width: 100%" class="myStyle"
         :header-cell-style="{background: '#F5F9FF',color: '#5F9EE0 ',fontSize: '16px',height:'35px',padding:0}"
         :cell-style="{padding:0,height:'35px',color:'#474747',fontSize:'16px',lineHeight:'35px'}"
@@ -405,7 +406,6 @@ export default {
         var astartTime = [];
         var anoonTime = [];
         var aendTime = [];
-        // console.log(this.shopForm.startTime)
         if(this.shopForm.startTime){
           astartTime = this.shopForm.startTime.split(":");
           this.shopForm.startTime = new Date('2019','10','21',astartTime[0],astartTime[1],astartTime[2]);
@@ -425,8 +425,8 @@ export default {
 
     //修改门店信息
     async addUpdate() {
-      console.log(this.shopForm.startTime)
       this.shopForm.startTime = this.formatTime(this.shopForm.startTime);
+      // console.log(this.shopForm.startTime)
       this.shopForm.handoverTime = this.formatTime(this.shopForm.handoverTime);
       this.shopForm.endTime = this.formatTime(this.shopForm.endTime);
       let datas = {
@@ -441,23 +441,22 @@ export default {
         "shopName": this.shopForm.shopName,
         "startTime":this.shopForm.startTime,
         "toMails":this.shopForm.toMails,
-        "specialTimes":this.tableData
+        "specialTimes":this.tableData,
+        "token":this.$store.state.token,
+        "userCode":this.$store.state.userCode
       }
-
-      datas.token = this.$store.state.token;
-      datas.userCode = this.$store.state.userCode;
-      const result = await updateShopDetails(datas)
+      const result = await updateShopDetails(datas);
       if(result.code === '0000') {
+        this.initData();
         this.$message({
           message: '修改成功',
           type: 'success'
         });
-        this.initData();
       } else {
-          this.$message({
-            message: result.msg,
-            type: 'warning'
-          });
+        this.$message({
+          message: result.msg,
+          type: 'warning'
+        });
       }
     },
 
@@ -468,7 +467,7 @@ export default {
         var day = d.getDate() + '' < 10 ? '0' + d.getDate() + '' : d.getDate() + '';
         return d.getFullYear() +"-"+ month +"-"+ day;
       } else {
-        d = "";
+        return "";
       }
     },
     //时间格式化
@@ -479,7 +478,7 @@ export default {
         var second = d.getSeconds()+"" < 10 ? "0"+d.getSeconds() +'' : d.getSeconds()+"";
         return hour +":"+ min +":"+ second;
       } else {
-        d = "";
+        return  "";
       }
     }
 
@@ -504,7 +503,7 @@ export default {
   .shifts{
     >div span{font:16px/54px "NotoSansHans-Medium";color:#5F9EE0;}
     .special button{
-      height:24x;
+      height:24px;
       font:12px/24px "";
       color:#fff;
       background:#5F9EE0;

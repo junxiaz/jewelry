@@ -19,7 +19,7 @@
             <img v-has :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
           </p>
           <p>
-            <span>{{item.money | numberStyle(",")}}</span> 元
+            <span :style="item.money < 0?{ color: '#f00' }:''">{{item.money | numberStyle(",")}}</span><a :style="item.money < 0?{ color: '#f00' }:''"> 元</a>
           </p>
         </div>
         <div v-else>
