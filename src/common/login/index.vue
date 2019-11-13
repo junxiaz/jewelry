@@ -124,12 +124,15 @@
         let result = await reqUserLogin({userCode, userPwd})
         if(result.code === '0000') {
           const token = result.token
-          const shopCode = result.shopCode
+          const shopCode = "";
+          const shopName = "";
           const userTypeCode = result.userTypeCode
-          this.loading = true
-          this.$store.dispatch('recordUser', {token, userCode, shopCode, userTypeCode})
+          this.loading = true;
+          //后期删掉shopCode,添加一个shopName
+          this.$store.dispatch('recordUser', {token, userCode, shopCode, userTypeCode,shopName})
             .then(() => {
               this.loading = false
+              sessionStorage.setItem('statu', true);
               this.$router.replace('/home')
             }).catch(() => {
               this.loading = false

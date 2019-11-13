@@ -1,21 +1,24 @@
 <template>
   <div class="header-guide">
     <h1 class="header-logo" @click="$router.replace('/home');">金升鑫珠宝RFID监控后台</h1>
-    <span class="header-nav">
-      <ul>
-        <li class="header-nav-item">
-          <router-link :to="item.path" v-for="(item, index) in nav"  @click="goTo(item, index)" :key="index" :class="item.nowImg?true:''">
-            <template v-if="$route.matched[0].path == item.path">
-              <img :src="item.activeUrl" >
-            </template>
-            <template v-else>              
-              <img :src="item.navUrl" alt="">
-            </template>            
 
-          </router-link>
-        </li>
-      </ul>
+    <span class="header-nav" v-show="$route.fullPath != '/home'">
+      <transition name="el-zoom-in-center">
+        <ul >
+          <li class="header-nav-item">
+            <router-link :to="item.path" v-for="(item, index) in nav"  @click="goTo(item, index)" :key="index" :class="item.nowImg?true:''">
+              <template v-if="$route.matched[0].path == item.path">
+                <img :src="item.activeUrl" >
+              </template>
+              <template v-else>              
+                <img :src="item.navUrl" alt="">
+              </template>           
+            </router-link>
+          </li>
+        </ul>
+      </transition>
     </span>
+
     <span class="header-login">
       <span class="header-login-name">欢迎，{{userCode}}</span>
       <img src="./imgs/line_navigation.png" alt="">
@@ -71,11 +74,20 @@ import { mapState } from "vuex";
         }).then(() => {
           // 请求退出
           this.$store.dispatch('logout')
+          sessionStorage.setItem('statu', false)
           this.$router.replace('/login')
         }).catch(() => {
           return false;
         });
+      },
+      checkLogin() {
+        if(sessionStorage.getItem('statu') == 'false') {
+          this.$router.replace('/login')
+        }
       }
+    },
+    created(){
+      this.checkLogin();
     },
   }
 </script>
@@ -102,6 +114,7 @@ import { mapState } from "vuex";
     display: inline-block;
     .header-nav-item {
       float: left;
+      height:72px;
       a {
         margin-left: 32px;
         margin-right: 32px;
@@ -126,4 +139,5 @@ import { mapState } from "vuex";
     }
   }
 }
+
 </style>

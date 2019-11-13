@@ -42,16 +42,8 @@ import "@/common/js" //引入公共的js代码，并将方法挂载到原型上
 // Vue.prototype.initDate = initDate;
 import has from '@/common/js/btnPermissions.js';
 
-//获取年月日
-Vue.filter('getDate',(data)=>{
-  if(data){
-    return data.slice(0,10);
-  }
-  else {
-    return "";
-  }
-  
-})
+import "@/common/filter"  //引入全局过滤器
+
 
 /* eslint-disable no-new */
 new Vue({

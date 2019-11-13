@@ -17,7 +17,7 @@ export default {
   components:{
     HeaderGuide,
     childRouter
-  }
+  },
 }
 </script>
 <style scoped lang="scss">

@@ -3,5 +3,6 @@ export default {
     token: '',
     userCode: '',
     userTypeCode: '',
-    shopCode: ''
+    shopCode: '',
+    shopName:''
 }

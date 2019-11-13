@@ -76,12 +76,12 @@
         :cell-style="{padding:0,height:'35px',color:'#474747',fontSize:'16px',lineHeight:'35px'}"
         :row-style="{height:'35px'}"
       >
-        <el-table-column prop="specialDate" label="日期"></el-table-column>
-        <el-table-column prop="startTime" label="早班"> </el-table-column>
-        <el-table-column prop="handoverTime" label="中班"></el-table-column>
-        <el-table-column prop="endTime" label="晚班"></el-table-column>
-        <el-table-column prop="dateDesc" label="备注"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column prop="specialDate" label="日期" min-width="120"></el-table-column>
+        <el-table-column prop="startTime" label="早班" min-width="120"> </el-table-column>
+        <el-table-column prop="handoverTime" label="中班" min-width="120"></el-table-column>
+        <el-table-column prop="endTime" label="晚班" min-width="120"></el-table-column>
+        <el-table-column prop="dateDesc" label="备注" min-width="120"></el-table-column>
+        <el-table-column label="操作" align="center" fixed="right" min-width="140">
           <template slot-scope="scope">
             <el-button type="text" icon="el-icon-edit-outline" size="medium" @click="openUpdateDialog(scope.row,scope.$index)"></el-button>
             <el-button type="text" icon="el-icon-delete" size="medium" @click="deleteTable(scope.$index)"></el-button>

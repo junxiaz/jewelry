@@ -4,8 +4,8 @@ import {
 } from './mutation-types'
 export default {
     // 同步记录用户信息
-    recordUser({ commit }, { token, userCode, shopCode, userTypeCode}) {
-        commit(RECEIVE_USER_INFO, { token, userCode, shopCode, userTypeCode })
+    recordUser({ commit }, { token, userCode, shopCode, userTypeCode,shopName}) {
+        commit(RECEIVE_USER_INFO, { token, userCode, shopCode, userTypeCode,shopName })
     },
 
     // 同步登出

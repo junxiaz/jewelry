@@ -2,7 +2,7 @@
   <div class="statistics">
     <!-- 实时统计 -->
     
-    <h2>长沙黄金城中国黄金</h2>
+    <h2>{{$store.state.shopName}}</h2>
 
     <!-- 数量统计 -->
     <el-row class="count">
@@ -15,18 +15,23 @@
         </div>
         <div v-else-if="index===2">
           <h5>{{item.title}}</h5>
-          <p><span>{{item.number}}</span> 元
+          <p><span>{{item.number}}</span> 万
             <img v-has :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
           </p>
           <p>
-            <span :style="item.money < 0?{ color: '#f00' }:''">{{item.money | numberStyle(",")}}</span><a :style="item.money < 0?{ color: '#f00' }:''"> 元</a>
+            <mark :style="item.money < 0?{ color: '#E52E3D' }:''" v-if="item.money <0">
+              <span>{{item.money | numberStyle(",")}} </span> 万
+            </mark>
+            <mark :style="item.money > 0?{ color: '#1f7e3e' }:''" v-else>
+              <span>+{{item.money | numberStyle(",")}} </span> 万
+            </mark>
           </p>
         </div>
         <div v-else>
           <h5>{{item.title}}</h5>
           <p><span>{{item.number}}</span> 件</p>
-          <p><span>{{item.money | numberStyle(",")}}</span> 元</p>
-          <p v-has><span>{{item.gramWeight}}</span> 克</p>
+          <p><span>{{item.money | numberStyle(",")}}</span> 万</p>
+          <p v-has class="gram"><span>{{item.gramWeight}}</span> 克</p>
         </div>
       </el-col>
     </el-row>
@@ -45,9 +50,9 @@
         <el-table-column prop="outCount" label="调出"></el-table-column>
         <el-table-column prop="saleCount" label="销售"></el-table-column>
         <el-table-column prop="nowSurplusCount" label="当前结余" min-width="100"></el-table-column>
-        <el-table-column prop="cost" label="成本" v-if="userTypeCode == 'UT00001'"></el-table-column>
-        <el-table-column prop="goldenWeight" label="总重量" v-if="userTypeCode == 'UT00001'"></el-table-column>
-        <el-table-column prop="marketPrice" label="市场价" v-if="userTypeCode == 'UT00001'"></el-table-column>
+        <el-table-column prop="cost" label="成本" v-if="userTypeCode == 'UT00001'" min-width="100"></el-table-column>
+        <el-table-column prop="goldenWeight" label="总重量" v-if="userTypeCode == 'UT00001'" show-overflow-tooltip min-width="100"></el-table-column>
+        <el-table-column prop="marketPrice" label="市场价" v-if="userTypeCode == 'UT00001'" show-overflow-tooltip min-width="100"></el-table-column>
 
       </el-table>
 
@@ -133,13 +138,11 @@ export default {
           this.preWarning = result.prewarning || 0
           numList[0].number = result.glodPrice || 0
           numList[0].money = result.createTime || 0
-          // numList[0].gramWeight = result.createTime || 0
           numList[1].number = result.totalCount || 0
           numList[1].money = result.totalPrice || 0
           numList[1].gramWeight = result.totalWeight || 0
           numList[2].number = result.prewarning || 0
           numList[2].money = result.dvalue || 0
-          // numList[2].gramWeight = result.createTime || 0
           numList[3].number = result.counterCount || 0
           numList[3].money = result.counterPrice || 0
           numList[3].gramWeight = result.counterWeight || 0
@@ -150,6 +153,8 @@ export default {
           numList[5].money = result.warehousePrice || 0
           numList[5].gramWeight = result.warehouseWeight || 0
         }
+
+            
       },
       handleClose(done) {
         this.$confirm('确认关闭？')
@@ -189,6 +194,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+mark{background:none;}
 .statistics{
   background:#fff;
   padding-bottom:40px;
@@ -205,10 +211,11 @@ export default {
     margin-bottom:40px;
     padding:0 0 36px 40px;
     >.el-col{
+      min-height: 171px;
       border-left:1px solid #DEDEDE;
       font:16px/1 "NotoSansHans-Medium";
       h5{color:#646464;}
-      span{font-size:32px;word-wrap : break-word;}
+      span{font-size:32px;word-wrap : break-word;font-weight:700;}
       p{
         cursor: pointer;
         img{
@@ -216,6 +223,7 @@ export default {
           vertical-align: bottom;
         }
       }
+      p.gram{margin-top:17px;}
       p:hover img{display: inline-block;}
       p:nth-child(2){margin:27px 0 17px 0;}
     }
@@ -224,7 +232,7 @@ export default {
     .style2{color:#7C51C8;}
     .style3{color:#E2A700;}
     .style4{color:#FE7355;}
-    .style5{color:#004000;}
+    .style5{color:#CE54C7;}
   }
 
   .tableMain{

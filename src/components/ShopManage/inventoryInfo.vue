@@ -1,7 +1,7 @@
 <template>
   <div class="inventoryInfo themeBg">
-    <!-- 盘点库存 -->
-    <h3>长沙黄金城中国黄金</h3>
+    <!-- 门店管理--盘点库存 -->
+    <h3>{{$store.state.shopName}}</h3>
     
     <div class="main">
       <!-- 表单 -->
@@ -38,16 +38,16 @@
       <el-table :data="tableData" border style="width: 100%" class="myStyle" v-loading="loading"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
       >
-        <el-table-column prop="shopCode" label="门店编码" fixed="left"></el-table-column>
-        <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip fixed="left"></el-table-column>
-        <el-table-column prop="productCode" label="产品编码"></el-table-column>
-        <el-table-column prop="productName" label="产品名称" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="shopCode" label="门店编码" fixed="left" min-width="120"></el-table-column>
+        <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip fixed="left" min-width="120"></el-table-column>
+        <el-table-column prop="productCode" label="产品编码" show-overflow-tooltip min-width="100"></el-table-column>
+        <el-table-column prop="productName" label="产品名称" show-overflow-tooltip min-width="120"></el-table-column>
         <el-table-column prop="handoverDesc" label="类型"></el-table-column>
-        <el-table-column prop="lastSurplusCount" label="上日结余"></el-table-column>
+        <el-table-column prop="lastSurplusCount" label="上日结余" min-width="100"></el-table-column>
         <el-table-column prop="upperCabinetCount" label="上柜"></el-table-column>
         <el-table-column prop="outCount" label="调出"></el-table-column>
         <el-table-column prop="saleCount" label="销售"></el-table-column>
-        <el-table-column prop="handoverDate" label="日期" width="124"></el-table-column>
+        <el-table-column prop="handoverDate" label="日期" min-width="140"></el-table-column>
       </el-table>
 
       <!-- 分页 -->

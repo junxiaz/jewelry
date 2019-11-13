@@ -2,7 +2,7 @@
   <div class="label-import">
     <!-- 标签导入 -->
     <!-- 标题 -->
-    <h2>长沙黄金城中国黄金</h2>
+    <h2>{{$store.state.shopName}}</h2>
 
     <div class="main">
       <!-- 组件 -->
@@ -84,7 +84,6 @@ export default {
           'Content-Type': 'multipart/form-data;charset=utf-8'
         }
       }).then(res => {
-        console.log(res)
         if(res.data.code === '0000') {
           this.$message({
             message: '上传文件成功',

@@ -2,7 +2,7 @@
   <div class="history themeBg">
     <!-- 历史记录 -->
 
-    <h3 class="mb24px">长沙黄金城中国黄金</h3>
+    <h3 class="mb24px">{{$store.state.shopName}}</h3>
 
     <!-- 表单 -->
       <el-form ref="form" :model="form" class="formStyle myStyle" :inline="true" size="medium">

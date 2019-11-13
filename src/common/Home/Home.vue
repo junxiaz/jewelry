@@ -21,26 +21,15 @@
       <el-table :data="tableData" border fit class="myStyle"
         :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'50px',padding:'0 6px'}"
         style="width: 100%">
-        <el-table-column prop="shopCode" label="门店编码"></el-table-column>
-        <el-table-column prop="shopName" label="门店名称"></el-table-column>
+        <el-table-column prop="shopCode" label="门店编码" fixed="left" min-width="120"></el-table-column>
+        <el-table-column prop="shopName" label="门店名称" min-width="100" show-overflow-tooltip></el-table-column>
         <el-table-column prop="city" label="城市"></el-table-column>
-        <el-table-column prop="county" label="区域"></el-table-column>
-        <el-table-column prop="contactNumber" label="联系方式"></el-table-column>
-        <el-table-column prop="contacts" label="联系人"></el-table-column>
+        <el-table-column prop="county" label="区域" min-width="100" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="contactNumber" label="联系方式" min-width="140"></el-table-column>
+        <el-table-column prop="contacts" label="联系人" min-width="100"></el-table-column>
         <el-table-column prop="stock" label="库存"></el-table-column>
-        <el-table-column prop="cost" label="成本"></el-table-column>
-        <el-table-column prop="prewarning" label="预警线"></el-table-column>
-        <el-table-column prop="startTime" label="上班时间"></el-table-column>
-        <el-table-column prop="endTime" label="下班时间"></el-table-column>
-        <el-table-column prop="handoverTime" label="交接时间"></el-table-column>
-          <!-- <template slot-scope="scope">
-            <span v-if="scope.row.status == '-1'">
-              -{{scope.row.province}}
-            </span>
-            <span v-else>
-              +{{scope.row.province}}
-            </span>
-          </template> -->
+        <el-table-column prop="cost" label="成本" min-width="140"></el-table-column>
+        <el-table-column prop="prewarning" label="预警线" min-width="100"></el-table-column>
         <el-table-column fixed="right" label="操作" width="210">
           <template slot-scope="scope">
             <el-link type="primary" @click="handleClick(scope.row)">查看详情</el-link>
@@ -93,7 +82,17 @@
       
       //查看详情
       handleClick(row) {
-        this.$router.push('/home/stock')
+        let shopCode = row.shopCode;
+        let shopName = row.shopName;
+        let token = this.$store.state.token;
+        let userCode = this.$store.state.userCode;
+        let userTypeCode = this.$store.state.userTypeCode;
+        this.$store.dispatch('recordUser', { shopCode, shopName,token,userCode,userTypeCode})
+        .then(() => {
+          this.$router.replace('/home/stock')
+        }).catch(() => {
+          // this.loading = false
+        })
       },
 
       //初始化数据

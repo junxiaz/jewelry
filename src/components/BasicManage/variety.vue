@@ -1,7 +1,7 @@
 <template>
   <div class="variety themeBg">
   <!-- 品种管理 -->
-  <h2 class="mb24px">长沙黄金城中国黄金</h2>
+  <h2 class="mb24px">{{$store.state.shopName}}</h2>
     <div class="main">
       <el-button type="primary" size="small" @click="addDialog = true" v-has>新增</el-button>
       <el-button type="primary" size="small"  @click="openUpdateDialog" v-has>修改</el-button>
@@ -13,10 +13,10 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="88" align="center"></el-table-column>
-        <el-table-column prop="brand" label="品牌"></el-table-column>
+        <el-table-column prop="brand" label="品牌" fixed="left" show-overflow-tooltip></el-table-column>
         <el-table-column prop="goldContent" label="含金量"> </el-table-column>
-        <el-table-column prop="productName" label="产品类型"></el-table-column>
-        <el-table-column prop="salesModel" label="销售模式"></el-table-column>
+        <el-table-column prop="productName" label="产品类型" min-width="120" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="salesModel" label="销售模式" min-width="120"></el-table-column>
         <el-table-column prop="technology" label="工艺"></el-table-column>
       </el-table>
 

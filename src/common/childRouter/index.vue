@@ -32,14 +32,12 @@ export default {
         }
       }
     },
-    
   },
   created(){
     this.routerShow();
-    // console.log(this.$route)
+
   },
   mounted(){
-
   }
 }
 </script>
