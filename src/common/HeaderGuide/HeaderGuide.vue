@@ -81,7 +81,16 @@ import { mapState } from "vuex";
         });
       },
       checkLogin() {
-        if(sessionStorage.getItem('statu') == 'false') {
+        const  LOGOUT_TIME = 1000 * 60 * 60 * 12; 
+        let timer = setTimeout(() => {
+          // 请求退出
+          this.$store.dispatch('logout')
+          sessionStorage.setItem('statu', false)
+          this.$router.replace('/login')
+          clearTimeout(timer)
+        }, LOGOUT_TIME);
+        if(!sessionStorage.getItem('statu') || sessionStorage.getItem('statu') == 'false') {
+          this.$store.dispatch('logout')
           this.$router.replace('/login')
         }
       }

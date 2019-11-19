@@ -6,7 +6,7 @@
 
     <!-- 数量统计 -->
     <el-row class="count">
-      <el-col :span="4" :class="'style'+index" align="center"
+      <el-col style="padding-left: 20px;" :span="4" :class="'style'+index" align="left"
               v-for="(item,index) in numList" :key="index">
         <div v-if="index===0">
           <h5>{{item.title}}</h5>
