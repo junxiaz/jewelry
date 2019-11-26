@@ -3,21 +3,22 @@
   <!-- 品种管理 -->
   <h2 class="mb24px">{{$store.state.shopName}}</h2>
     <div class="main">
-      <el-button type="primary" size="small" @click="addDialog = true" v-has>新增</el-button>
-      <el-button type="primary" size="small"  @click="openUpdateDialog" v-has>修改</el-button>
-      <!-- <el-button type="primary" size="small">删除</el-button> -->
+      <el-button type="danger" size="small" @click="addDialog = true" v-has>新增</el-button>
+      <el-button type="danger" size="small"  @click="openUpdateDialog" v-has>修改</el-button>
+      <!-- <el-button type="danger" size="small">删除</el-button> -->
 
       <!-- 表格 -->
       <el-table :data="tableData" border style="width: 100%" class="mt30px myStyle" v-loading="loading"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px'}"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'48px'}"
+        :row-style="{background:'#fcfbf7'}"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="88" align="center"></el-table-column>
-        <el-table-column prop="brand" label="品牌" fixed="left" show-overflow-tooltip></el-table-column>
+        <el-table-column type="selection" width="55" align="center" fixed="left"></el-table-column>
+        <el-table-column prop="brand" label="品牌" fixed="left" min-width="100" show-overflow-tooltip></el-table-column>
         <el-table-column prop="goldContent" label="含金量"> </el-table-column>
         <el-table-column prop="productName" label="产品类型" min-width="120" show-overflow-tooltip></el-table-column>
         <el-table-column prop="salesModel" label="销售模式" min-width="120"></el-table-column>
-        <el-table-column prop="technology" label="工艺"></el-table-column>
+        <el-table-column prop="technology" label="工艺" min-width="100"></el-table-column>
       </el-table>
 
       <el-row style="margin-top:15px;">
@@ -57,7 +58,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="closeDialog('addForm')" size="mini">取 消</el-button>
-        <el-button type="primary" @click="addData('addForm')" size="mini">确 定</el-button>
+        <el-button type="danger" @click="addData('addForm')" size="mini">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -88,7 +89,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="closeDialog('updateForm')" size="mini">取 消</el-button>
-        <el-button type="primary" @click="addData('updateForm')" size="mini">确 定</el-button>
+        <el-button type="danger" @click="addData('updateForm')" size="mini">确 定</el-button>
       </span>
     </el-dialog>
 

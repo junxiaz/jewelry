@@ -73,7 +73,7 @@ export default {
         株洲市: [geoCoordMap["株洲市"][0] + 2.4, geoCoordMap["株洲市"][1] - 1.2],
       };
 
-      const colorList = ["#705fe0", "#b6acfe", "#a397f2", "#7667d8", "#b2a6ff", "#6050cc"];
+      const colorList = ["#D1AA67", "#b6acfe", "#a397f2", "#7667d8", "#b2a6ff", "#6050cc"];
 
       //查看详情
       function handleClick() {
@@ -191,7 +191,7 @@ export default {
     drawMap2() {
       let myChart = echarts.init(document.getElementById("mapContainer"));
       let colorList = [
-        "#705fe0",
+        "#D1AA67",
         "#b6acfe",
         "#a397f2",
         "#7667d8",

@@ -249,15 +249,15 @@
 /* Break-point
 --------------------------*/
 .el-tag {
-  background-color: #f1effc;
+  background-color: #f3f3ea;
   border-color: #e2dff9;
-  color: #705fe0;
+  color: #D1AA67;
   display: inline-block;
   height: 32px;
   padding: 0 10px;
   line-height: 30px;
   font-size: 12px;
-  color: #705FE0;
+  color: #D1AA67;
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
@@ -265,12 +265,12 @@
   box-sizing: border-box;
   white-space: nowrap; }
   .el-tag.is-hit {
-    border-color: #705FE0; }
+    border-color: #D1AA67; }
   .el-tag .el-tag__close {
-    color: #705fe0; }
+    color: #D1AA67; }
     .el-tag .el-tag__close:hover {
       color: #FFFFFF;
-      background-color: #705fe0; }
+      background-color: #D1AA67; }
   .el-tag.el-tag--info {
     background-color: #f4f4f5;
     border-color: #e9e9eb;
@@ -330,16 +330,16 @@
     .el-tag .el-icon-close::before {
       display: block; }
   .el-tag--dark {
-    background-color: #705fe0;
-    border-color: #705fe0;
+    background-color: #D1AA67;
+    border-color: #D1AA67;
     color: white; }
     .el-tag--dark.is-hit {
-      border-color: #705FE0; }
+      border-color: #D1AA67; }
     .el-tag--dark .el-tag__close {
       color: white; }
       .el-tag--dark .el-tag__close:hover {
         color: #FFFFFF;
-        background-color: #8d7fe6; }
+        background-color: #dfc495; }
     .el-tag--dark.el-tag--info {
       background-color: #909399;
       border-color: #909399;
@@ -387,14 +387,14 @@
   .el-tag--plain {
     background-color: white;
     border-color: #c6bff3;
-    color: #705fe0; }
+    color: #D1AA67; }
     .el-tag--plain.is-hit {
-      border-color: #705FE0; }
+      border-color: #D1AA67; }
     .el-tag--plain .el-tag__close {
-      color: #705fe0; }
+      color: #D1AA67; }
       .el-tag--plain .el-tag__close:hover {
         color: #FFFFFF;
-        background-color: #705fe0; }
+        background-color: #D1AA67; }
     .el-tag--plain.el-tag--info {
       background-color: white;
       border-color: #d3d4d6;

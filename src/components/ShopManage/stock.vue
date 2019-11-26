@@ -23,13 +23,14 @@
           </el-autocomplete>
         </el-form-item> -->
         <el-form-item>
-          <el-button type="primary" @click="initEasyTable()">查询</el-button>
+          <el-button type="danger" @click="initEasyTable()">查询</el-button>
         </el-form-item>
       </el-form>
 
       <!-- 表格 -->
       <el-table :data="tableData" border style="width: 100%" class="myStyle" v-loading="loading"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px'}"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'48px'}"
+        :row-style="{background:'#fcfbf7'}"
       >
         <el-table-column prop="shopName" label="门店名称" :show-overflow-tooltip="true" fixed="left" min-width="140"></el-table-column>
         <el-table-column prop="productName" label="产品名称" min-width="140" show-overflow-tooltip></el-table-column>
@@ -90,9 +91,12 @@ export default {
         this.initEasyTable();
       },
 
-     // 初始化数据
+     // 初始化列表数据
       async initEasyTable(){
-        const {params} = this
+        const {params} = this;
+        if(this.form.productName == ""){
+          this.params.productCode = "";
+        }
         const result = await reqRealTimeStatisticsInfo(params)
         if(result.code === '0000') {
           this.loading = false;
@@ -113,16 +117,16 @@ export default {
         }
       },
       //获取门店选项
-      async initShopOPT(){
-        const params = {
-          token: this.$store.state.token,
-          userCode: this.$store.state.userCode
-        }
-        const result = await reqShopOPT(params)
-        if(result.code === '0000') {
-          this.form.shopList = result.datas;
-        }
-      },
+      // async initShopOPT(){
+      //   const params = {
+      //     token: this.$store.state.token,
+      //     userCode: this.$store.state.userCode
+      //   }
+      //   const result = await reqShopOPT(params)
+      //   if(result.code === '0000') {
+      //     this.form.shopList = result.datas;
+      //   }
+      // },
 
       //带建议搜索输入框---开始
       querySearch(queryString, cb,name) {
@@ -167,7 +171,7 @@ export default {
     created(){
       this.initEasyTable();
       this.initProductOPT();
-      this.initShopOPT();
+      // this.initShopOPT();
     },
 }
 </script>

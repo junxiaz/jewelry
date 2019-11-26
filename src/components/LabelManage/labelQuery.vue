@@ -1,5 +1,5 @@
 <template>
-  <div class="label-query">
+  <div class="label-query bt2">
     <!-- 标签查询 -->
     <h2>{{$store.state.shopName}}</h2>
 
@@ -37,25 +37,26 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="onSubmit(params)" size="medium">查询</el-button>
+          <el-button type="danger" @click="onSubmit(params)" size="medium">查询</el-button>
         </el-form-item>
       </el-form>
 
       <!-- 表格 -->
       <el-table :data="tableData" border style="width: 100%;margin-top:10px;" class="mt30px myStyle"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
+        :row-style="{background:'#fcfbf7'}"
       >
         <el-table-column prop="brand" label="品牌" show-overflow-tooltip fixed="left" min-width="100"> </el-table-column>
         <el-table-column prop="shopName" label="门店" show-overflow-tooltip min-width="140"></el-table-column>
         <el-table-column prop="barcode" label="射频编码" show-overflow-tooltip min-width="120"></el-table-column>
-        <el-table-column prop="othercode" label="原始编码" show-overflow-tooltip min-width="120"></el-table-column> 
+        <el-table-column prop="othercode" label="原始编码" show-overflow-tooltip min-width="140"></el-table-column> 
         <el-table-column prop="productName" label="产品名称" show-overflow-tooltip min-width="120"></el-table-column>
         <el-table-column prop="technology" label="小类" show-overflow-tooltip min-width="100"></el-table-column>
         <el-table-column prop="weight" label="件重" show-overflow-tooltip min-width="100"></el-table-column>
         <el-table-column prop="goldenWeight" label="金重" show-overflow-tooltip min-width="100"></el-table-column>
         <el-table-column prop="salesModel" label="出售方式" min-width="100"></el-table-column>
         <el-table-column prop="cost" label="售价"></el-table-column>
-        <el-table-column prop="certificate" label="证书"> </el-table-column>
+        <el-table-column prop="certificate" label="证书" min-width="100" show-overflow-tooltip> </el-table-column>
         <el-table-column prop="createTime" label="入库时间" min-width="140"></el-table-column>
         <el-table-column prop="tagStatus" label="标签状态" min-width="100"></el-table-column>
       </el-table>

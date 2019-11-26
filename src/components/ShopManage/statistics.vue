@@ -1,45 +1,60 @@
 <template>
   <div class="statistics">
     <!-- 实时统计 -->
-    
-    <h2>{{$store.state.shopName}}</h2>
+    <div id="dataList">
+      <h2>{{$store.state.shopName}}</h2>
 
     <!-- 数量统计 -->
-    <el-row class="count">
-      <el-col style="padding-left: 20px;" :span="4" :class="'style'+index" align="left"
-              v-for="(item,index) in numList" :key="index">
-        <div v-if="index===0">
-          <h5>{{item.title}}</h5>
-          <p><span>{{item.number}}</span> 元/克</p>
-          <p><span>{{item.money | numberStyle(",")}}</span></p>
-        </div>
-        <div v-else-if="index===2">
-          <h5>{{item.title}}</h5>
-          <p><span>{{item.number}}</span> 万
-            <img v-has :src="imgUrl" @click="dialogVisible = true" alt="修改"></img>
-          </p>
-          <p>
-            <mark :style="item.money < 0?{ color: '#E52E3D' }:''" v-if="item.money <0">
-              <span>{{item.money | numberStyle(",")}} </span> 万
-            </mark>
-            <mark :style="item.money > 0?{ color: '#1f7e3e' }:''" v-else>
-              <span>+{{item.money | numberStyle(",")}} </span> 万
-            </mark>
-          </p>
-        </div>
-        <div v-else>
-          <h5>{{item.title}}</h5>
-          <p><span>{{item.number}}</span> 件</p>
-          <p><span>{{item.money | numberStyle(",")}}</span> 万</p>
-          <p v-has class="gram"><span>{{item.gramWeight}}</span> 克</p>
-        </div>
-      </el-col>
-    </el-row>
+      <el-row :gutter="20" id="cardList" class="mt20">
+        <el-col :span="4" v-for="(item,index) in numList" :key="index">
+          <div v-if="index===0"
+              :style="{'backgroundImage':'url('+item.bg+')'}" class="cardBox">
+            <h3>{{item.title}}</h3>
+            <p class="ellipsis"><span>{{item.number}}</span> 元/克</p>
+            <p class="ellipsis"><span>{{item.money | numberStyle(",")}}</span></p>
+            <img :src="item.icon" class="iconImg"/>
+          </div>
 
-    <div class="tableMain">
+          <template v-else-if="index===2">            
+            <div v-if="item.money < 0" class="cardBox"
+                :style="{'backgroundImage':'url('+item.bg+')'}" >
+              <h3>{{item.title}}</h3>
+              <p class="ellipsis"><span>{{item.number}}</span> 万
+                <img v-has :src="imgUrl" @click="dialogVisible = true" alt="修改" style="cursor: pointer;"></img>
+              </p>
+              <p style="color:#C81212" class="ellipsis"><span>{{item.money | numberStyle(",")}} </span> 万</p>
+              <img :src="item.icon" class="iconImg"/>
+            </div>
+            <div v-else class="cardBox"
+                  :style="{'backgroundImage':'url('+earlywarnGreen+')'}" >
+              <h3>{{item.title}}</h3>
+              <p class="ellipsis"><span>{{item.number}}</span> 万
+                <img v-has :src="imgUrl" @click="dialogVisible = true" alt="修改" style="cursor: pointer;"></img>
+              </p>
+              <p style="color:#008574" class="ellipsis"><span>+{{item.money | numberStyle(",")}} </span> 万</p>
+              <img :src="item.icon" class="iconImg"/>
+            </div>
+          </template>
+
+          <div v-else
+              :style="{'backgroundImage':'url('+item.bg+')'}" class="cardBox">
+            <h3>{{item.title}}</h3>
+            <p class="ellipsis"><span>{{item.number}}</span> 件</p>
+            <p class="ellipsis"><span>{{item.money | numberStyle(",")}}</span> 万</p>
+            <p v-has class="ellipsis"><span>{{item.gramWeight}}</span> 克</p>
+            <img :src="item.icon" class="iconImg"/>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+    
+    <!-- 表格 -->
+    <div class="tableMain mt20">
+      <h2>实时统计</h2>
       <!-- 表格 -->
-      <el-table :data="tableData" border style="width: 100%" class="myStyle"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
+      <el-table :data="tableData" border style="width: 100%" class="myStyle mt20"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
+        :row-style="{background:'#fcfbf7'}"
       >
         <el-table-column prop="shopCode" label="门店编码" fixed="left" min-width="100"></el-table-column>
         <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip min-width="100"></el-table-column>
@@ -69,14 +84,14 @@
 
     <!-- 弹框 -->
     <el-dialog
-      title="提示"
+      title="提示（单位：万元）"
       :visible.sync="dialogVisible"
       width="30%"
       :before-close="handleClose">
       <el-input v-model="preWarning" size="medium"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="mini" type="primary" @click="updateShopPrewarning">确 定</el-button>
+        <el-button size="mini" type="danger" @click="updateShopPrewarning">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -100,14 +115,16 @@ export default {
       total: 0,
       usserTypeCode:"",
       tableData: [],
-      imgUrl:require("../../../static/images/edit_icon.png"),
+      imgUrl:require("./imgs/edit_icon.png"),
+      earlywarnGreen: require("./imgs/earlywarnGreen_bg.png"),
+
       numList:[
-        {title:"实时金价",number:"",money:"",gramWeight:""},
-        {title:"珠宝总数",number:"",money:"",gramWeight:""},
-        {title:"预警线",number:"",money:"",gramWeight:""},
-        {title:"在柜珠宝",number:"",money:"",gramWeight:""},
-        {title:"当天销售",number:"",money:"",gramWeight:""},
-        {title:"在库珠宝",number:"",money:"",gramWeight:""},
+        {title:"实时金价",number:"",money:"",gramWeight:"", bg:require("./imgs/realtimeGold_bg.png") ,icon:require("./imgs/realtimeGold_icon.png")},
+        {title:"珠宝总数",number:"",money:"",gramWeight:"", bg:require("./imgs/totalJewelry_bg.png") ,icon:require("./imgs/totalJewelry_icon.png")},
+        {title:"预警线",number:"",money:"",gramWeight:"", bg:require("./imgs/earlywarnRed_bg.png") ,icon:require("./imgs/earlywarn_icon.png")},
+        {title:"在柜珠宝",number:"",money:"",gramWeight:"", bg:require("./imgs/cabinetJewelry_bg.png") ,icon:require("./imgs/cabinetJewelry_icon.png")},
+        {title:"当天销售",number:"",money:"",gramWeight:"", bg:require("./imgs/samedaySell_bg.png") ,icon:require("./imgs/samedaySell_icon.png")},
+        {title:"在库珠宝",number:"",money:"",gramWeight:"", bg:require("./imgs/libraryJewelry_bg.png") ,icon:require("./imgs/libraryJewelry_icon.png")},
       ],
       preWarning: '',
       dialogVisible: false
@@ -168,7 +185,7 @@ export default {
         datas.token = this.$store.state.token
         datas.userCode = this.$store.state.userCode
         datas.shopCode = this.$store.state.shopCode
-        datas.prewarning = this.preWarning
+        datas.prewarning = this.preWarning * 10000 + ""
         const res = await updateShopPrewarning(datas)
         console.log(datas)
         if(res.code === '0000') {
@@ -196,47 +213,53 @@ export default {
 <style scoped lang="scss">
 mark{background:none;}
 .statistics{
-  background:#fff;
   padding-bottom:40px;
-  h2{    
-    padding:36px 40px 0;    
-    font:700 22px/1 "NotoSansHans-Bold";
-    color:#464646;
-  }
+  border-top:2px solid #D1AA67;
 
-  .count{
-    overflow: hidden;
-    border-bottom:1px solid #DEDEDE;
-    margin-top:45px;
-    margin-bottom:40px;
-    padding:0 0 36px 40px;
-    >.el-col{
-      min-height: 171px;
-      border-left:1px solid #DEDEDE;
-      font:16px/1 "NotoSansHans-Medium";
-      h5{color:#646464;}
-      span{font-size:32px;word-wrap : break-word;font-weight:700;}
-      p{
-        cursor: pointer;
-        img{
-          display: none;
-          vertical-align: bottom;
+  #dataList{
+    background:#fff;
+    min-width: 1220px;
+    h2{    
+      padding:36px 40px 0;    
+      font:700 22px/1 "NotoSansHans-Bold";
+      color:#464646;
+    }
+    #cardList{
+      padding:25px 25px 15px;
+      .cardBox{
+        height:219px;
+        background-repeat: no-repeat;
+        background-size:cover;
+        background-position: center;
+        border-radius: 10px;
+        padding:20px 0 0 20px;
+        color:#fff;
+        font-family: "NotoSansHans-Regular";
+        position:relative;
+        h3{font:20px/1 "NotoSansHans-Regular";margin-bottom:7px;}
+        p{
+          font-size:14px;
+          margin-top:20px;
+          span{
+            font:31px/1 "Arial-BoldMT";
+          }
+        }
+        img.iconImg{
+          position:absolute;
+          top:16px;
+          right:13px;
         }
       }
-      p.gram{margin-top:17px;}
-      p:hover img{display: inline-block;}
-      p:nth-child(2){margin:27px 0 17px 0;}
     }
-    .style0{color:#373A5B;border:0;}
-    .style1{color:#00AAEA;}
-    .style2{color:#7C51C8;}
-    .style3{color:#E2A700;}
-    .style4{color:#FE7355;}
-    .style5{color:#CE54C7;}
   }
 
   .tableMain{
-    margin:40px 160px 0 100px;
+    min-width: 1170px;
+    padding:20px 25px 16px;
+    background:#fff;
+    h2{
+      font:700 22px/1 "";
+    }
   }
 }
 </style>

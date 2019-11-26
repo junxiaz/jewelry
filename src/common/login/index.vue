@@ -4,16 +4,16 @@
       <h1 class="title">金升鑫珠宝RFID监管平台</h1>
       <h1 class="subtitle">登录</h1>
       <el-form :model="ruleForm" label-position="top" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="用户名" prop="userCode">
-          <el-input v-model.number="ruleForm.userCode"></el-input>
+        <el-form-item label="用户名" prop="userCode" class="lineHeight">
+          <el-input v-model.number="ruleForm.userCode" class="nobd" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="userPwd">
-          <el-input type="password" v-model="ruleForm.userPwd" autocomplete="off"></el-input>
+        <el-form-item label="密码" prop="userPwd" class="lineHeight">
+          <el-input type="password" v-model="ruleForm.userPwd" autocomplete="off" class="nobd" size="small"></el-input>
         </el-form-item>
         <el-checkbox v-model="ruleForm.remeber">记住密码</el-checkbox>
         <el-form-item class="btn">
-          <el-button type="primary" @click="submitForm('ruleForm')" to="/home">登录</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')" to="/home" style="width:100px;">登录</el-button>
+          <el-button @click="resetForm('ruleForm')" style="width:100px;">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -154,39 +154,45 @@
 </script>
 
 <style lang="scss" scoped>
+
   .login {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    background: url('./imgs/backgroud_login.png') no-repeat;
-    background-size: 100% 100%;
+    // width: 100%;
+    min-height: 700px;
+    min-width: 1280px;;
+    // overflow-x: hidden;
+    background: url('./imgs/background.png') no-repeat center;
+    background-size: cover;
+    background-attachment:fixed;
     position: relative;
     .login-content {
-      width: 440px;
-      height: 710px;
-      padding-left: 680px;
-      padding-right: 80px;
-      background: url('./imgs/picture.png') no-repeat;
-      background-size: 100% 100%;
+      width: 560px;
+      height: 700px;
+      margin-left: 680px;
+      margin-right: 80px;
+      background:#fff;
+      // background: url('./imgs/picture.png') no-repeat;
+      // background-size: 100% 100%;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-600px, -355px);
       .title {
         font-size: 36px;
-        color: rgb(115, 92, 225);
+        color: rgb(199,159,108);
         text-align: center;
-        margin-top: 85px;
-        margin-bottom: 65px;
+        margin-top: 90px;
+        margin-bottom: 82px;
       }
       .subtitle {
         font-size: 36px;
-        color: rgb(115, 92, 225);
+        color: rgb(99, 99, 99);
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 90px;
       }
+      .demo-ruleForm{padding:0 60px;}
       .btn {
         text-align: center;
+        margin-top:40px;
       }
     }
   }

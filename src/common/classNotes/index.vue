@@ -26,9 +26,9 @@ export default {
   padding-bottom:10px;
   font-size:20px;
   border-bottom:1px solid #D6D6D6;
-  .gang{color:#705FE0;}
+  .gang{color:#D1AA67;}
   div.box{
-    border-left:4px solid #705FE0;
+    border-left:4px solid #D1AA67;
     em{display: inline-block;width: 5px;}
     span{color:#676767;}
   }

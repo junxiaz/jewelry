@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container bt2">
     <!-- 首页 -->
     
     <!-- 搜索条件 myStyle,homePage样式见style.css-->
@@ -11,7 +11,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit(params)">查询</el-button>
+          <el-button type="danger" @click="onSubmit(params)">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -19,7 +19,8 @@
     <!-- 表格 -->
     <div class="table">
       <el-table :data="tableData" border fit class="myStyle"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'50px',padding:'0 6px'}"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'50px',padding:'0 6px'}"
+        :row-style="{background:'#fcfbf7'}"
         style="width: 100%">
         <el-table-column prop="shopCode" label="门店编码" fixed="left" min-width="120"></el-table-column>
         <el-table-column prop="shopName" label="门店名称" min-width="100" show-overflow-tooltip></el-table-column>
@@ -32,7 +33,7 @@
         <el-table-column prop="prewarning" label="预警线" min-width="100"></el-table-column>
         <el-table-column fixed="right" label="操作" width="210">
           <template slot-scope="scope">
-            <el-link type="primary" @click="handleClick(scope.row)">查看详情</el-link>
+            <el-link type="warning" @click="handleClick(scope.row)">查看详情</el-link>
           </template>
         </el-table-column>
       </el-table>

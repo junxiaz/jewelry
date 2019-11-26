@@ -9,7 +9,7 @@
 
       <!-- 表格 -->
       <el-table :data="tableData" border style="width: 100%" class="mt30px myStyle" v-loading="loading"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px'}"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'48px'}"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="88" align="center"></el-table-column>

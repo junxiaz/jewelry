@@ -71,8 +71,8 @@
       </div>
       
       <!-- 表格 -->
-      <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border style="width: 100%" class="myStyle"
-        :header-cell-style="{background: '#F5F9FF',color: '#5F9EE0 ',fontSize: '16px',height:'35px',padding:0}"
+      <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" border style="width: 100%" class="myStyle noChange"
+        :header-cell-style="{background: '#FFEBCE',color: '#F57B23 ',fontSize: '16px',height:'35px',padding:0}"
         :cell-style="{padding:0,height:'35px',color:'#474747',fontSize:'16px',lineHeight:'35px'}"
         :row-style="{height:'35px'}"
       >
@@ -113,7 +113,7 @@
         </el-form-item>
       </el-form>
 
-      <el-button type="primary" @click="submitAll()" size="medium" v-has>提交</el-button>
+      <el-button type="danger" @click="submitAll()" size="medium" v-has>提交</el-button>
     </div>
 
     <!-- 添加弹框 -->
@@ -147,7 +147,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog('addTimeForm')" size="mini">取 消</el-button>
-        <el-button type="primary" @click="submitOvertime('addTimeForm')" size="mini">确 定</el-button>
+        <el-button type="danger" @click="submitOvertime('addTimeForm')" size="mini">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -178,7 +178,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeDialog('updateTimeForm')" size="mini">取 消</el-button>
-        <el-button type="primary" @click="submitOvertime('updateTimeForm')" size="mini">确 定</el-button>
+        <el-button type="danger" @click="submitOvertime('updateTimeForm')" size="mini">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -423,7 +423,7 @@ export default {
       }
     },
 
-    //修改门店信息
+    //提交门店信息
     async addUpdate() {
       this.shopForm.startTime = this.formatTime(this.shopForm.startTime);
       // console.log(this.shopForm.startTime)
@@ -437,7 +437,7 @@ export default {
         "county": this.shopForm.county,
         "endTime": this.shopForm.endTime,
         "handoverTime": this.shopForm.handoverTime,
-        "shopCode": this.shopForm.shopCode,
+        "shopCode": this.$store.state.shopCode,
         "shopName": this.shopForm.shopName,
         "startTime":this.shopForm.startTime,
         "toMails":this.shopForm.toMails,
@@ -501,12 +501,12 @@ export default {
   .shop{margin-top:15px;}
 
   .shifts{
-    >div span{font:16px/54px "NotoSansHans-Medium";color:#5F9EE0;}
+    >div span{font:16px/54px "NotoSansHans-Medium";color:#F57B23;}
     .special button{
       height:24px;
       font:12px/24px "";
       color:#fff;
-      background:#5F9EE0;
+      background:#ffa148;
       border:0;
       padding:0 6px;
       margin-left:10px;

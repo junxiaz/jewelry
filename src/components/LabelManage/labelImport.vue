@@ -1,5 +1,5 @@
 <template>
-  <div class="label-import">
+  <div class="label-import bt2">
     <!-- 标签导入 -->
     <!-- 标题 -->
     <h2>{{$store.state.shopName}}</h2>
@@ -36,7 +36,7 @@
         </el-form-item>
       </el-form>
       
-      <el-button type="primary" @click="submitUpload" size="medium" v-has>提交</el-button>
+      <el-button type="danger" @click="submitUpload" size="medium" v-has>提交</el-button>
     </div>
   </div>
 </template>

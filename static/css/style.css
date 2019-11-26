@@ -1,5 +1,12 @@
 /* 背景色和padding */
-.themeBg{background:#fff;padding:36px 40px;}
+.themeBg{background:#fff;padding:36px 40px;border-top:2px solid #D1AA67;}
+
+.mt20{margin-top:20px;}
+.bt2{border-top:2px solid #D1AA67;}
+
+/* 登录页 */
+.login .nobd input{border-top:0;border-left:0;border-right:0;}
+.login form.demo-ruleForm .lineHeight label{line-height: 1em;}
 /* 表单----开始 */
 /* 表单中label的字体颜色 */
 .myStyle .el-form-item__label{color:#474747;font-size:16px;}
@@ -37,3 +44,11 @@
 /* 去掉分页的padding和margin值 */
 .myStyle.el-pagination{padding:0}
 .myStyle.el-pagination button.btn-next{padding:0;margin-right:0;}
+
+
+.el-table:not(.noChange) td, .el-table:not(.noChange) th.is-leaf,.el-table--border:not(.noChange), .el-table:not(.noChange) .el-table--group{
+  border-color: #FFE4B5 !important; 
+}
+.el-table--border:not(.noChange)::after, .el-table:not(.noChange) .el-table--group::after, .el-table:not(.noChange)::before{
+  background-color: #FFE4B5 !important;
+}

@@ -45,18 +45,22 @@ export default {
 <style scoped lang="scss">
 ul{
   overflow:hidden;
-  margin-left:44px;
+  margin-left:40px;
   li{
     float:left;
-    margin:0 16px;
-    width: 95px;
-    height:45px;
-    font:16px/45px "NotoSansHans-Medium";
+    margin:0 10px;
+    width: 140px;
+    height:42px;
+    font:16px/42px "NotoSansHans-Medium";
     text-align: center;
-    color:#474747;
+    color:#D2AB62;
     cursor: pointer;
+    background:#fff;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid #D2AB62;
+    border-bottom:0;
   }
-  li.router-link-active {background:#fff;color:#705FE0}
+  li.router-link-active {background:#D2AB62;color:#fff;font-weight: 700;}
 }
 
 </style>

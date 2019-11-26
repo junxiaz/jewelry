@@ -82,7 +82,7 @@
     color: #FFFFFF;
     display: inline-block;
     text-align: center;
-    background: #705FE0;
+    background: #D1AA67;
     vertical-align: top;
     cursor: pointer;
   }

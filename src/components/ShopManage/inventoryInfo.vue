@@ -20,23 +20,24 @@
                           @select="((item) => {handleSelect(item,'product')})" >
           </el-autocomplete>
         </el-form-item>
-        <el-form-item label="店名" prop="shopCode">
+        <!-- <el-form-item label="店名" prop="shopCode">
           <el-autocomplete v-model="form.shopName" placeholder="请输入店名" :debounce=0 style="width:230px;"
                           :fetch-suggestions="((queryString, cb)=>{querySearch(queryString, cb,'shop')})" 
                           @select="((item) => {handleSelect(item,'shop')})" >
           </el-autocomplete>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="日期">
           <el-date-picker type="date" value-format="yyyy-MM-dd" placeholder="日期" v-model="form.handoverDate" style="width: 230px;"></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search('form')">查询</el-button>
+          <el-button type="danger" @click="search('form')">查询</el-button>
         </el-form-item>
       </el-form>
 
       <!-- 表格 -->
       <el-table :data="tableData" border style="width: 100%" class="myStyle" v-loading="loading"
-        :header-cell-style="{background: '#705FE0',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
+        :header-cell-style="{background: '#D1AA67',color: '#fff',fontSize: '16px',height:'48px',padding:'0 6px'}"
+        :row-style="{background:'#fcfbf7'}"
       >
         <el-table-column prop="shopCode" label="门店编码" fixed="left" min-width="120"></el-table-column>
         <el-table-column prop="shopName" label="门店名称" show-overflow-tooltip fixed="left" min-width="120"></el-table-column>
@@ -78,7 +79,7 @@ export default {
           productCode:"",
           handoverDate:"",
           handoverType:0,          
-          shopCode:"",
+          shopCode:this.$store.state.shopCode,
           token: this.$store.state.token,
           userCode: this.$store.state.userCode,
         },
@@ -110,9 +111,9 @@ export default {
         if(this.form.productName == ""){
           this.params.productCode = "";
         }
-        if(this.form.shopName == ""){
-          this.params.shopCode = "";
-        }
+        // if(this.form.shopName == ""){
+        //   this.params.shopCode = "";
+        // }
         this.initEasyTable();
         // return false;
       },
@@ -156,7 +157,7 @@ export default {
       },
       //带建议搜索输入框---结束
 
-     // 初始化数据
+     // 初始化列表数据
       async initEasyTable(){
         const {params} = this
         const result = await reqStatisticsInfo(params)
@@ -179,22 +180,22 @@ export default {
         }
       },
       //获取门店选项
-      async initShopOPT(){
-        const params = {
-          token: this.$store.state.token,
-          userCode: this.$store.state.userCode
-        }
-        const result = await reqShopOPT(params)
-        if(result.code === '0000') {
-          this.form.shopList = result.datas;
-        }
-      },
+      // async initShopOPT(){
+      //   const params = {
+      //     token: this.$store.state.token,
+      //     userCode: this.$store.state.userCode
+      //   }
+      //   const result = await reqShopOPT(params)
+      //   if(result.code === '0000') {
+      //     this.form.shopList = result.datas;
+      //   }
+      // },
     },
 
     created(){
       this.initEasyTable();
       this.initProductOPT();
-      this.initShopOPT();
+      // this.initShopOPT();
     }
 }
 </script>
