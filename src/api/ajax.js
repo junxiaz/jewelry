@@ -34,9 +34,3 @@ export default function ajax(url, data = {}, type = 'GET') {
   })
 }
 
-/*
-const response = await ajax()
-const result = response.data
-
-const resule = await ajax()
- */
